@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Etiqueta extends Model
 {
     use HasFactory;
+
+    public function incidencias()
+    {
+        return $this->hasMany(Incidencia::class);
+    }
 }

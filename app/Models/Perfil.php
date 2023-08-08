@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Perfil extends Model
 {
     use HasFactory;
+
+    public function oficina()
+    {
+        return $this->belongsTo(Perfil::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

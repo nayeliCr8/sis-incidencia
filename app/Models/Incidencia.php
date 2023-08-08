@@ -8,4 +8,24 @@ use Illuminate\Database\Eloquent\Model;
 class Incidencia extends Model
 {
     use HasFactory;
+
+    public function etiqueta()
+    {
+        return $this->belongsTo(Etiqueta::class);
+    }
+
+    public function equipo()
+    {
+        return $this->belongsTo(Equipo::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function resueltos()
+    {
+        return $this->hasMany(Resuelto::class);
+    }
 }
