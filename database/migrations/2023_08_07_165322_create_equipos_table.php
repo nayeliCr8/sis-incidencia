@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('ip');
             $table->longText('observacion');
             $table->enum('estado', ['Pesimo', 'Regular','Bueno','Excelente']);
-            $table->string('tipo_computadora');
+            $table->string('tipo_equipo');
             $table->foreignId('oficina_id')->constrained('oficinas')->restrictOnDelete();
             $table->timestamps();
         });
