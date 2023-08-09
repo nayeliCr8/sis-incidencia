@@ -7,5 +7,5 @@ use Inertia\Inertia;
 
 
 Route::get('prueba', function(){
-    return "hola mundo";
+    return Inertia::render('admin/adminhome');
 })->name('prueba');
