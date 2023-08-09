@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Etiqueta;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class EtiquetaController extends Controller
 {
@@ -12,7 +13,7 @@ class EtiquetaController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('admin/etiqueta/Index');
     }
 
     /**
