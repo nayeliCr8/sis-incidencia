@@ -1,6 +1,7 @@
 <script setup>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import {Head} from "@inertiajs/vue3";
+import CardEquipo from '@/Components/MyComponents/CardEquipo.vue'
 
 </script>
 <template>
@@ -13,8 +14,12 @@ import {Head} from "@inertiajs/vue3";
                     <div class="p-6 text-gray-900 dark:text-gray-100">
                         PANEL ETIQUETA
                     </div>
+                    
                 </div>
             </div>
+            <div v-for="i in 3" :key="i" class="grid grid-cols-2">
+                        <CardEquipo></CardEquipo>
+                    </div>
         </div>
     </AdminLayout>
 </template>

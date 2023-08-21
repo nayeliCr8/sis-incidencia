@@ -29,7 +29,12 @@ class EtiquetaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'first_name'=>'required|numeric',
+            'last_name'=>'required',
+            'email'=>'required|email',
+        ]);
+        dd($request);
     }
 
     /**
