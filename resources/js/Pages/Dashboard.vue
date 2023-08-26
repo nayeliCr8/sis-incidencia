@@ -18,7 +18,7 @@ import CardEquipo from '@/Components/MyComponents/CardEquipo.vue';
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
                     <!-- <Welcome /> -->
                     <div class="grid w-full lg:grid-cols-3 sm:grid-cols-2 p-4 justify-center">
-                        <CardEquipo v-for="i in 4" :key="i" ></CardEquipo>
+                        <CardEquipo v-for="i in 4" :key="i" :tipo="i===2?'1':'0'" ></CardEquipo>
                     </div> 
                 </div>
             </div>
