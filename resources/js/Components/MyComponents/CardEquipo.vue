@@ -1,6 +1,7 @@
 <script setup>
 defineProps({
     tipo: String,
+    requeried: true,
 });
 </script>
 
