@@ -7,13 +7,14 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+import { usePermission } from "@/composables/permissions";
 
 defineProps({
     title: String,
 });
 
+const { hasRole } = usePermission();
 const showingNavigationDropdown = ref(false);
-
 const switchToTeam = (team) => {
     router.put(route('current-team.update'), {
         team_id: team.id,
@@ -51,7 +52,7 @@ const logout = () => {
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
-                                <NavLink :href="route('admin.prueba')" :active="route().current('admin.prueba')">
+                                <NavLink v-if="hasRole('administrador')" :href="route('admin.users.index')" :active="route().current('admin.users.index')">
                                     Admin
                                 </NavLink>
                             </div>

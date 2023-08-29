@@ -25,5 +25,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@gmail.com',
             'password' => bcrypt('test@gmail.com')
         ]);
+
+        $this->call([RolesSeeder::class, AdminSeeder::class]);
     }
 }
