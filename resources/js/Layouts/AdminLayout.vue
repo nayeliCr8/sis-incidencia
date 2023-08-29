@@ -51,11 +51,21 @@ const logout = () => {
                      <SederbarLink :href="route('admin.etiqueta.index')" :active="route().current('admin.etiqueta.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                              <path class="fill-current text-gray-300 group-hover:text-cyan-300" fill-rule="evenodd" d="M2 6a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1H8a3 3 0 00-3 3v1.5a1.5 1.5 0 01-3 0V6z" clip-rule="evenodd" />
-                             <path class="fill-current text-gray-600 group-hover:text-cyan-600" d="M6 12a2 2 0 012-2h8a2 2 0 012 2v2a2 2 0 01-2 2H2h2a2 2 0 002-2v-2z" />
+                             <path class="fill-current text-gray-600 group-hover:text-cyan-800" d="M6 12a2 2 0 012-2h8a2 2 0 012 2v2a2 2 0 01-2 2H2h2a2 2 0 002-2v-2z" />
                          </svg>
                          <span class="group-hover:text-gray-700">Categories</span>
                      </SederbarLink>
                  </li>
+                 <li>
+                    <SederbarLink :href="route('admin.incidencia.index')" :active="route().current('admin.incidencia.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
+                        <!-- Nuevo ícono SVG para Incidencias -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4" viewBox="0 0 640 512">
+                        <path class="fill-current text-gray-400 group-hover:text-cyan-300" d="M384 96V320H64L64 96H384zM64 32C28.7 32 0 60.7 0 96V320c0 35.3 28.7 64 64 64H181.3l-10.7 32H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H352c17.7 0 32-14.3 32-32s-14.3-32-32-32H277.3l-10.7-32H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64z"/> 
+                        <path class="fill-current text-gray-600 group-hover:text-cyan-800" d="M 534 0 c -26.5 0 -48 21.5 -48 48 V 432 c 0 26.5 21.5 48 48 48 h 64 c 26.5 0 48 -21.5 48 -48 V 48 C 646 21 624.5 0 598 0 H 598 z m 16 64 h 32 c 8.8 0 16 7.2 16 16 s -7.2 16 -16 16 H 550 c -8.8 0 -16 -7.2 -16 -16 s 7.2 -16 16 -16 z m -16 80 c 0 -8.8 7.2 -16 16 -16 h 32 c 8.8 0 16 7.2 16 16 s -7.2 16 -16 16 H 550 c -8.8 0 -16 -7.2 -16 -16 z m 32 160 a 32 32 0 1 1 0 64 a 32 32 0 1 1 0 -64 z"/>
+                        </svg>
+                        <span class="group-hover:text-gray-700">Incidencias</span>
+                    </SederbarLink>
+                </li>
                  <li>
                      <a href="#" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
