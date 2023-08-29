@@ -22,3 +22,4 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('etiqueta', EtiquetaController::class);
     Route::resource('incidencia',IncidenciaController::class);
 });
+    
