@@ -27,5 +27,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([RolesSeeder::class, AdminSeeder::class]);
+        \App\Models\Etiqueta::factory(5)->create();
+        \App\Models\Sede::factory(10)->create();
+        \App\Models\Oficina::factory(30)->create();
+        \App\Models\Equipo::factory(50)->create();
+        \App\Models\Incidencia::factory(50)->create();
     }
 }

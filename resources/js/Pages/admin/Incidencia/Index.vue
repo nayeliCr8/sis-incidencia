@@ -2,6 +2,14 @@
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import {Head} from "@inertiajs/vue3";
 
+import Table from "@/Components/Table.vue";
+import TableRow from "@/Components/TableRow.vue";
+import TableHeaderCell from "@/Components/TableHeaderCell.vue";
+import TableDataCell from "@/Components/TableDataCell.vue";
+
+defineProps({
+    incidencias: Object,
+});
 </script>
 <template>
     <Head title="Incidencias"/>
@@ -14,6 +22,56 @@ import {Head} from "@inertiajs/vue3";
                         PANEL DE INCIDENCIAS
                     </div>
                 </div>
+            </div>
+            <div class="mt-6">
+                <Table>
+                <template #header>
+                    <TableRow>
+                        <TableHeaderCell>ID</TableHeaderCell>
+                        <TableHeaderCell>Estado</TableHeaderCell>
+                        <TableHeaderCell>Nivel</TableHeaderCell>
+                        <TableHeaderCell>Evidencia</TableHeaderCell>
+                        <TableHeaderCell>Equipo</TableHeaderCell>
+                        <TableHeaderCell>User</TableHeaderCell>
+                        <TableHeaderCell>Etiqueta</TableHeaderCell>
+                    </TableRow>
+                </template>
+                <template #default>
+                    <TableRow v-for="inc in incidencias" :key="inc.id" class="border-b">
+                        <TableDataCell >{{ inc.id }}</TableDataCell>
+                        <TableDataCell >{{ inc.estado }}</TableDataCell>
+                        <TableDataCell >{{ inc.nivel }}</TableDataCell>
+                        <TableDataCell >{{ inc.evidencia }}</TableDataCell>
+                        <TableDataCell >{{ inc.equipo.marca }}</TableDataCell>
+                        <TableDataCell >{{ inc.user.name }}</TableDataCell>
+                        <TableDataCell >{{ inc.etiqueta.nombre }}</TableDataCell>
+                        <!-- <TableDataCell v-if="role.id != 1" class="space-x-4">
+                            <Link
+                            :href="route('admin.roles.edit', role.id)"
+                            class="text-green-400 hover:text-green-600"
+                            >Edit</Link
+                            >
+                            <button
+                            @click="confirmDeleteRole"
+                            class="text-red-400 hover:text-red-600"
+                            >
+                            Delete
+                            </button>
+                            <Modal :show="showConfirmDeleteRoleModal" @close="closeModal">
+                            <div class="p-6">
+                                <h2 class="text-lg font-semibold text-slate-800">
+                                Are you sure to delete this Role?
+                                </h2>
+                                <div class="mt-6 flex space-x-4">
+                                <DangerButton @click="deleteRole(role.id)">Delete</DangerButton>
+                                <SecondaryButton @click="closeModal">Cancel</SecondaryButton>
+                                </div>
+                            </div>
+                            </Modal>
+                        </TableDataCell> -->
+                    </TableRow>
+                </template>
+                </Table>
             </div>
         </div>
     </AdminLayout>

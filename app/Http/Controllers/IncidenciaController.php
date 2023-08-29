@@ -13,7 +13,14 @@ class IncidenciaController extends Controller
      */
     public function index()
     {
-        return Inertia::render('admin/Incidencia/Index');
+        $incidencias = Incidencia::with(
+            'etiqueta',
+            'equipo',
+            'user',
+                'user.perfil'
+        )->get();
+        // dd($inicidencias);
+        return Inertia::render('admin/Incidencia/Index',compact('incidencias'));
     }
 
     /**
