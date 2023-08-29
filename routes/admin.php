@@ -15,7 +15,7 @@ Route::resource('roles', RoleController::class);
 Route::resource('permissions', PermissionController::class);
 
 Route::get('prueba', function(){
-    return Inertia::rernde('admin/adminhome');
+    return Inertia::render('admin/adminhome');
 })->name('prueba')->middleware(['auth','role:superadmin']);
 
 Route::middleware(['auth'])->group(function () {
