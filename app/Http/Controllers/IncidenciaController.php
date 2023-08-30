@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Incidencia;
+use App\Models\Perfil;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -19,7 +21,7 @@ class IncidenciaController extends Controller
             'user',
                 'user.perfil'
         )->get();
-        // dd($inicidencias);
+        // dd($incidencias);
         return Inertia::render('admin/Incidencia/Index',compact('incidencias'));
     }
 
