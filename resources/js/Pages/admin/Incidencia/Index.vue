@@ -50,7 +50,7 @@ defineProps({
                                 <span class="absolute right-0 bottom-0 h-2 w-2 rounded-full bg-green-400 ring ring-white"></span>
                             </div>
                             <div class="text-sm ml-1">
-                                <div class="font-medium text-gray-700">{{ inc.user.name }} - {{ inc.user.perfil.apellidos }}</div>
+                                <!-- <div class="font-medium text-gray-700">{{ inc.user.name }} - {{ inc.user.perfil.apellidos }}</div> -->
                                 <div class="text-gray-400">{{ inc.user.email }}</div>
                             </div>
                         </TableDataCell>
