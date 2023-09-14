@@ -19,11 +19,10 @@ class IncidenciaFactory extends Factory
         return [
             'estado' => fake()->randomElement(array('Incidencia','Solucionado','Pendiente','Suspendido')),
             'nivel' => fake()->randomElement(array('Urgente','No urgente')),
-            // 'ip' => str_pad(fake()->ipv4(), STR_PAD_LEFT),
             'descripcion' => fake()->text(),
-            'evidencia' => 'URL: '.fake()->colorName(),
+            'evidencia' => fake()->url(),
             'equipo_id' => fake()->numberBetween(1,20),
-            'user_id' => fake()->numberBetween(1,2),
+            'user_id' => fake()->numberBetween(3,12),
             'etiqueta_id' => fake()->numberBetween(1,5),
         ];
     }

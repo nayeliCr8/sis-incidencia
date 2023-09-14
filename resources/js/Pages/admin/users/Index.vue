@@ -50,47 +50,46 @@ const deleteUser = (id) => {
             <TableRow>
               <TableHeaderCell>ID</TableHeaderCell>
               <TableHeaderCell>Name</TableHeaderCell>
+              <TableHeaderCell>Rol</TableHeaderCell>
               <TableHeaderCell>Email</TableHeaderCell>
               <TableHeaderCell>Action</TableHeaderCell>
             </TableRow>
           </template>
           <template #default>
           <TableRow v-for="user in users" :key="user.id" class="border-b">
-            <TableDataCell class="space-x-4" v-if="user.id != 2">
-              <th class="flex gap-3 px-6 py-4 font-normal text-gray-900">
-                <div class="relative h-10 w-10">
-                  <img
-                    class="h-full w-full rounded-full object-cover object-center"
-                    :src="user.profile_photo_url"
-                    alt=""
-                  />
-                  <span class="absolute right-0 bottom-0 h-2 w-2 rounded-full bg-green-400 ring ring-white"></span>
-                </div>
-                <div class="text-sm">
-                  <div class="font-medium text-gray-700">{{ user.name }}</div>
-                  <div class="text-gray-400">{{ user.email }}</div>
-                </div>
-              </th>
-            </TableDataCell>
-            <TableDataCell class="space-x-4" v-if="user.id != 2">{{ user.name }}</TableDataCell>
-            <TableDataCell class="space-x-4" v-if="user.id != 2">{{ user.email }}</TableDataCell>
-            <TableDataCell class="space-x-4" v-if="user.id != 2">
-              <Link
-                :href="route('admin.users.edit', user.id)"
-                class="text-green-400 hover:text-green-600"
-                >Edit</Link
-              >
-              <button @click="confirmDeleteUser" class="text-red-400 hover:text-red-600">Delete</button>
-              <Modal :show="showConfirmDeleteUserModal" @close="closeModal">
-                <div class="p-6">
-                <h2 class="text-lg font-semibold text-white">Are you sure to delete this user?</h2>
-                <div class="mt-6 flex space-x-4">
-                  <DangerButton @click="deleteUser(user.id)">Delete</DangerButton>
-                  <SecondaryButton @click="closeModal">Cancel</SecondaryButton>
-                </div>
-                </div>
-              </Modal>
-            </TableDataCell>
+              <TableDataCell class="space-x-4">
+                <th class="flex gap-3 px-6 py-4 font-normal text-gray-900">
+                  <div class="relative h-10 w-10">
+                    <img class="h-full w-full rounded-full object-cover object-center"
+                      :src="user.profile_photo_url"
+                      alt=""
+                    />
+                    <span class="absolute right-0 bottom-0 h-2 w-2 rounded-full bg-green-400 ring ring-white"></span>
+                  </div>
+                  <div class="text-sm">
+                    <div class="font-medium text-gray-700">{{ user.name }}</div>
+                    <div class="text-gray-400">{{ user.email }}</div>
+                  </div>
+                </th>
+              </TableDataCell>
+              <TableDataCell class="space-x-4" >{{ user.name }}</TableDataCell>
+              <TableDataCell class="space-x-4" >{{ user.roles[0]?user.roles[0].name:'sin Rol' }}</TableDataCell>
+              <TableDataCell class="space-x-4" >{{ user.email }}</TableDataCell>
+              <TableDataCell class="space-x-4" >
+                <Link :href="route('admin.users.edit', user.id)"
+                  class="text-green-400 hover:text-green-600"
+                  >Edit</Link>
+                <button v-if="user.roles[0]==null || user.roles[0].name != 'superadmin'" @click="confirmDeleteUser" class="text-red-400 hover:text-red-600">Delete</button>
+                <Modal :show="showConfirmDeleteUserModal" @close="closeModal">
+                  <div class="p-6">
+                    <h2 class="text-lg font-semibold text-white">Are you sure to delete this user?</h2>
+                    <div class="mt-6 flex space-x-4">
+                      <DangerButton @click="deleteUser(user.id)">Delete</DangerButton>
+                      <SecondaryButton @click="closeModal">Cancel</SecondaryButton>
+                    </div>
+                  </div>
+                </Modal>
+              </TableDataCell>
           </TableRow>
           </template>
         </Table>

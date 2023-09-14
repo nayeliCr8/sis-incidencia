@@ -1,7 +1,8 @@
 <script setup>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import {Head} from "@inertiajs/vue3";
-import CardEquipo from '@/Components/MyComponents/CardEquipo.vue'
+import CardEquipo from '@/Components/MyComponents/datatable.vue'
+import Datatable from "@/Components/MyComponents/datatable.vue";
 
 </script>
 <template>
@@ -16,6 +17,7 @@ import CardEquipo from '@/Components/MyComponents/CardEquipo.vue'
                     </div>
                     
                 </div>
+                <Datatable></Datatable>
             </div>
         </div>
     </AdminLayout>

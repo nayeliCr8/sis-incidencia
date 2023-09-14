@@ -22,8 +22,9 @@ class UserController extends Controller
      */
     public function index(): Response
     {
+        // dd(User::with('roles')->get());
         return Inertia::render('admin/users/Index', [
-            'users' => UserResource::collection(User::all())
+            'users' => UserResource::collection(User::with('roles')->get())
         ]);
     }
 
