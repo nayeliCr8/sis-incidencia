@@ -77,7 +77,7 @@ const save = () => {
     <div class="max-w-7xl mx-auto py-4">
       <div class="flex justify-end mr-6">
         <!-- <h1>Users Index Page</h1> -->
-        <SecondaryButton @click="FormStore">Registrar Sede</SecondaryButton>
+        <SecondaryButton @click="FormStore">Registrar Oficina</SecondaryButton>
         <Modal :show="showModel" @close="closeModal">
           <div class="p-4">
             <div class="mb-6">

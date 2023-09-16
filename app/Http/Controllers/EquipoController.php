@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\EquipoResource;
 use App\Models\Equipo;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class EquipoController extends Controller
 {
@@ -12,7 +14,8 @@ class EquipoController extends Controller
      */
     public function index()
     {
-        //
+        $equipos = EquipoResource::collection(Equipo::with('oficina')->get());
+        return Inertia::render('admin/equipos/Index', compact('equipos'));
     }
 
     /**

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EquipoController;
 use App\Http\Controllers\EtiquetaController;
 use App\Http\Controllers\IncidenciaController;
 use App\Http\Controllers\OficinaController;
@@ -25,5 +26,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('incidencia',IncidenciaController::class);
     Route::resource('sedes',SedeController::class);
     Route::resource('oficinas',OficinaController::class);
+    Route::resource('equipos',EquipoController::class);
 });
     
