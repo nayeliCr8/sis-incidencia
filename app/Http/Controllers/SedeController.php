@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateSedeRequest;
+use App\Http\Resources\SedeResource;
 use App\Models\Sede;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
 
 class SedeController extends Controller
 {
@@ -12,7 +16,8 @@ class SedeController extends Controller
      */
     public function index()
     {
-        //
+        $sedes = SedeResource::collection(Sede::all());
+        return Inertia::render('admin/sedes/Index', compact('sedes'));
     }
 
     /**
@@ -26,9 +31,14 @@ class SedeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateSedeRequest $request)
     {
-        //
+        $sede = new Sede();
+
+        $sede->nombre = $request->nombre;
+        $sede->direccion = $request->direccion;
+
+        $sede->save();
     }
 
     /**
@@ -50,9 +60,12 @@ class SedeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Sede $sede)
+    public function update(CreateSedeRequest $request, Sede $sede)
     {
-        //
+        $sede->nombre = $request->nombre;
+        $sede->direccion = $request->direccion;
+
+        $sede->save();
     }
 
     /**
@@ -60,6 +73,8 @@ class SedeController extends Controller
      */
     public function destroy(Sede $sede)
     {
-        //
+        $sede->delete();
+
+        return Redirect::back();
     }
 }

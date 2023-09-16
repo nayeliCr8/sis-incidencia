@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\EtiquetaController;
 use App\Http\Controllers\IncidenciaController;
+use App\Http\Controllers\OficinaController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SedeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -21,5 +23,7 @@ Route::get('prueba', function(){
 Route::middleware(['auth'])->group(function () {
     Route::resource('etiqueta', EtiquetaController::class);
     Route::resource('incidencia',IncidenciaController::class);
+    Route::resource('sedes',SedeController::class);
+    Route::resource('oficinas',OficinaController::class);
 });
     
