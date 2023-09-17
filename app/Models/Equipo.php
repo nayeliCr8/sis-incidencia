@@ -9,6 +9,8 @@ class Equipo extends Model
 {
     use HasFactory;
 
+    // protected $fillable = ['estado'];
+
     public function oficina()
     {
         return $this->belongsTo(Oficina::class);
@@ -18,4 +20,11 @@ class Equipo extends Model
     {
         return $this->hasMany(Incidencia::class);
     }
+
+    public static $option = [
+        'Bueno',
+        'Bueno',
+        'Bueno',
+        'Bueno',
+    ];
 }

@@ -2,10 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateEquipoRequest;
 use App\Http\Resources\EquipoResource;
+use App\Http\Resources\OficinaResource;
 use App\Models\Equipo;
+use App\Models\Oficina;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\Rules\Enum;
 use Inertia\Inertia;
+use PhpParser\Node\Expr\BinaryOp\Equal;
+use Illuminate\Support\Collection;
 
 class EquipoController extends Controller
 {
@@ -17,21 +24,43 @@ class EquipoController extends Controller
         $equipos = EquipoResource::collection(Equipo::with('oficina')->get());
         return Inertia::render('admin/equipos/Index', compact('equipos'));
     }
-
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        $oficinas = OficinaResource::collection(Oficina::select('id','nombre')->get());
+        $collection = collect(['Malo','Bueno','Malo']);
+
+        // $estados = array(4, "4", "3", 4, 3, "3");
+        // $estadoss = [];
+        // foreach ($estados as $estado) {
+        //     $estadoss = ['estado'=>$estado];
+            // $test = array_unique([$estados]);
+            dump($collection);
+        // }
+        // dump($test);
+        return Inertia::render('admin/equipos/Create', compact('oficinas'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateEquipoRequest $request)
     {
-        //
+        $equipo = new Equipo();
+
+        $equipo->marca = $request->marca;
+        $equipo->serie = $request->serie;
+        $equipo->ip = $request->ip;
+        $equipo->estado = $request->estado;
+        $equipo->observacion = $request->observacion;
+        $equipo->tipo_equipo = $request->tipo;
+        $equipo->oficina_id = $request->oficina;
+
+        $equipo->save();
+
+        return Redirect::route('admin.equipos.index');
     }
 
     /**
