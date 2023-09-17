@@ -21,10 +21,5 @@ class Equipo extends Model
         return $this->hasMany(Incidencia::class);
     }
 
-    public static $option = [
-        'Bueno',
-        'Bueno',
-        'Bueno',
-        'Bueno',
-    ];
+    public static $estados = ['Pesimo','Regular', 'Bueno','Excelente'];
 }

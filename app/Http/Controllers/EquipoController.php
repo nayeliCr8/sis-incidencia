@@ -30,17 +30,9 @@ class EquipoController extends Controller
     public function create()
     {
         $oficinas = OficinaResource::collection(Oficina::select('id','nombre')->get());
-        $collection = collect(['Malo','Bueno','Malo']);
-
-        // $estados = array(4, "4", "3", 4, 3, "3");
-        // $estadoss = [];
-        // foreach ($estados as $estado) {
-        //     $estadoss = ['estado'=>$estado];
-            // $test = array_unique([$estados]);
-            dump($collection);
-        // }
-        // dump($test);
-        return Inertia::render('admin/equipos/Create', compact('oficinas'));
+        $estados = Equipo::$estados;
+        // dump($estados);  
+        return Inertia::render('admin/equipos/Create', compact('oficinas','estados'));
     }
 
     /**
