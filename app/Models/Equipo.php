@@ -9,7 +9,7 @@ class Equipo extends Model
 {
     use HasFactory;
 
-    // protected $fillable = ['estado'];
+    protected $guarded = [];
 
     public function oficina()
     {

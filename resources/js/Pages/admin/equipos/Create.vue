@@ -6,6 +6,7 @@ import InputError from "@/Components/InputError.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import { Head, useForm, Link } from "@inertiajs/vue3";
+import VueMultiselect from 'vue-multiselect'
 defineProps({
   oficinas: Object,
   estados: Object,
@@ -81,6 +82,19 @@ const save = () => {
             </select>
             <InputError class="mt-2" :message="form.errors.oficina" />
           </div>
+          <!-- <div class="mb-6">
+            <InputLabel>Oficina</InputLabel>
+              <VueMultiselect 
+                v-model="form.oficina"
+                placeholder="Seleccione..."
+                :options="oficinas"
+                :searchable="true"
+                label="nombre"
+                :track-by="id"
+                :value="id"
+                />
+            <InputError class="mt-2" :message="form.errors.oficina" />
+            </div> -->
           <div class="mt-6 flex space-x-4 justify-end">
             <Link
               :href="route('admin.equipos.index')"
@@ -95,4 +109,5 @@ const save = () => {
   </AdminLayout>
 </template>
 
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>
 <style lang="scss" scoped></style>

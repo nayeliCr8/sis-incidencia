@@ -50,6 +50,15 @@ class EquipoController extends Controller
         $equipo->tipo_equipo = $request->tipo;
         $equipo->oficina_id = $request->oficina;
 
+        // Equipo::create([
+        //     'marca' => $request->marca,
+        //     'serie' => $request->serie,
+        //     'ip' => $request->ip,
+        //     'estado' => $request->estado,
+        //     'observacion' => $request->observacion,
+        //     'tipo_equipo' => $request->tipo,
+        //     'oficina_id' => $request->oficina,
+        // ]);
         $equipo->save();
 
         return Redirect::route('admin.equipos.index');
@@ -68,15 +77,27 @@ class EquipoController extends Controller
      */
     public function edit(Equipo $equipo)
     {
-        //
+        $oficinas = OficinaResource::collection(Oficina::select('id','nombre')->get());
+        $estados = Equipo::$estados;
+        return Inertia::render('admin/equipos/Edit', compact('equipo','oficinas','estados'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Equipo $equipo)
+    public function update(CreateEquipoRequest $request, Equipo $equipo)
     {
-        //
+        $equipo->marca = $request->marca;
+        $equipo->serie = $request->serie;
+        $equipo->ip = $request->ip;
+        $equipo->estado = $request->estado;
+        $equipo->observacion = $request->observacion;
+        $equipo->tipo_equipo = $request->tipo;
+        $equipo->oficina_id = $request->oficina;
+
+        $equipo->save();
+
+        return Redirect::route('admin.equipos.index');
     }
 
     /**
@@ -84,6 +105,8 @@ class EquipoController extends Controller
      */
     public function destroy(Equipo $equipo)
     {
-        //
+        $equipo->delete();
+
+        return Redirect::route('admin.equipos.index');
     }
 }
