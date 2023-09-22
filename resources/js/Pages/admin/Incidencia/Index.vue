@@ -7,6 +7,12 @@ import TableRow from "@/Components/TableRow.vue";
 import TableHeaderCell from "@/Components/TableHeaderCell.vue";
 import TableDataCell from "@/Components/TableDataCell.vue";
 
+import DialogModal from '@/Components/DialogModal.vue';
+import SecondaryButton from '@/Components/SecondaryButton.vue';
+import { ref } from "vue";
+import datatable from "@/Components/MyComponents/datatable.vue";
+
+const displayingToken = ref(false);
 defineProps({
     incidencias: Object,
 });
@@ -22,7 +28,13 @@ defineProps({
                         PANEL DE INCIDENCIAS
                     </div>
                 </div>
+                <!-- <div v-for="da,index in incidencias" :key="index">
+                    <div>{{ da }}</div>
+                </div> -->
             </div>
+            <SecondaryButton @click="displayingToken = true">
+                Abrir
+            </SecondaryButton>
             <div class="mt-6">
                 <Table>
                 <template #header>
@@ -82,5 +94,25 @@ defineProps({
                 </Table>
             </div>
         </div>
+
+        <DialogModal :show="displayingToken" @close="displayingToken = false" max-width="6xl">
+            <template #title>
+                API Token
+            </template>
+
+            <template #content>
+                <div>
+                    Please copy your new API token. For your security, it won't be shown again.
+                </div>
+                <datatable :tableData="incidencias"/>
+                
+            </template>
+
+            <template #footer>
+                <SecondaryButton @click="displayingToken = false">
+                    Close
+                </SecondaryButton>
+            </template>
+        </DialogModal>
     </AdminLayout>
 </template>

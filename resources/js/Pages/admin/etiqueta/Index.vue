@@ -17,7 +17,7 @@ import Datatable from "@/Components/MyComponents/datatable.vue";
                     </div>
                     
                 </div>
-                <Datatable></Datatable>
+                <Datatable ></Datatable>
             </div>
         </div>
     </AdminLayout>
