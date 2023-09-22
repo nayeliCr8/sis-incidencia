@@ -29,8 +29,8 @@ const logout = () => {
 
 <template>
     <div class="w-full h-full">
-        <aside :class="{'w-100':showingNavigationDropdown,'ml-[-100%]':!showingNavigationDropdown}" class="fixed z-10 top-0 pb-3 px-6 flex flex-col justify-between h-screen border-r bg-white transition duration-300 lg:ml-0 md:w-4/12 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]">
-            <div>
+        <aside :class="{'w-100':showingNavigationDropdown,'ml-[-100%]':!showingNavigationDropdown}" class="fixed z-10 top-0 pb-3 pl-6 flex flex-col justify-between h-screen border-r bg-white transition duration-300 lg:ml-0 md:w-4/12 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]">
+            <div class="hover:overflow-auto">
                 <div class="mt-4 text-center my-2">
                     <img :src="$page.props.auth.user.profile_photo_url" :alt="$page.props.auth.user.name" class="w-10 h-10 m-auto rounded-full object-cover lg:w-28 lg:h-28">
                     <h5 class="hidden mt-4 text-xl font-semibold text-gray-600 lg:block">{{ $page.props.auth.user.name }}</h5>
