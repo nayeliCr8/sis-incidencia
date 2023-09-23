@@ -30,7 +30,7 @@ const logout = () => {
 <template>
     <div class="w-full h-full">
         <aside :class="{'w-100':showingNavigationDropdown,'ml-[-100%]':!showingNavigationDropdown}" class="fixed z-10 top-0 pb-3 pl-6 flex flex-col justify-between h-screen border-r bg-white transition duration-300 lg:ml-0 md:w-4/12 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]">
-            <div class="hover:overflow-auto">
+            <div class="overflow-auto p-2">
                 <div class="mt-4 text-center my-2">
                     <img :src="$page.props.auth.user.profile_photo_url" :alt="$page.props.auth.user.name" class="w-10 h-10 m-auto rounded-full object-cover lg:w-28 lg:h-28">
                     <h5 class="hidden mt-4 text-xl font-semibold text-gray-600 lg:block">{{ $page.props.auth.user.name }}</h5>
@@ -66,7 +66,7 @@ const logout = () => {
                         <span class="group-hover:text-gray-700">Incidencias</span>
                     </SederbarLink>
                 </li>
-                 <!-- <li>
+                 <li>
                      <a href="#" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                              <path class="fill-current text-gray-600 group-hover:text-cyan-600" fill-rule="evenodd" d="M2 5a2 2 0 012-2h8a2 2 0 012 2v10a2 2 0 002 2H4a2 2 0 01-2-2V5zm3 1h6v4H5V6zm6 6H5v2h6v-2z" clip-rule="evenodd" />
@@ -92,7 +92,7 @@ const logout = () => {
                          </svg>
                          <span class="group-hover:text-gray-700">Finance</span>
                      </a>
-                 </li> -->
+                 </li>
                  <li>
                     <SederbarLink :href="route('admin.users.index')" :active="route().current('admin.users.*')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
                         <svg
@@ -242,6 +242,23 @@ const logout = () => {
     </div>
 </template>
 
-<style lang="scss" scoped>
+<style>
 
+body::-webkit-scrollbar{
+    width: 10px;
+}
+
+body::-webkit-scrollbar-thumb{
+    background: linear-gradient(180deg, rgba(9,151,170,1) 0%, rgba(103,232,249,1) 49%);
+    border-radius: 8px;
+}
+
+div.overflow-auto::-webkit-scrollbar{
+    width: 5px;
+}
+
+div.overflow-auto::-webkit-scrollbar-thumb{
+    background: linear-gradient(180deg, rgba(9,151,170,1) 0%, rgba(103,232,249,1) 49%);
+    border-radius: 8px;
+}
 </style>
