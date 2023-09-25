@@ -24,6 +24,6 @@ class DatabaseSeeder extends Seeder
         \App\Models\Oficina::factory(30)->create();
         \App\Models\Perfil::factory(12)->create();
         \App\Models\Equipo::factory(50)->create();
-        \App\Models\Incidencia::factory(50)->create();
+        \App\Models\Incidencia::factory(500)->create();
     }
 }

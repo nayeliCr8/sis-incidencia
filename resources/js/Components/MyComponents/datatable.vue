@@ -1,14 +1,13 @@
 <script setup>
 import { computed, ref } from 'vue';
-
 const props = defineProps({
-    tableHeaders: {
-        type: Array,
+    tableKeysHeaders: {
+        type: Object,
         required: true,
-        default: ['id','estado','nivel','descripcion','evidencia',"equipo_id","user_id","etiqueta_id","created_at","updated_at",'Etiqueta'],
+        default: {'id':'ID','estado':'Estado','nivel':'Nivel','descripcion':'Descripción','evidencia':'Evidencia',"equipo_id":'ID Equipo',"user_id":'ID User',"etiqueta_id":'ID Etiqueta',"created_at":'F creación',"updated_at":'F Actuali'},
     },
     tableData: {
-        type: Array,
+        type: Object,
         required: true,
         default: [{ "id": 1, 
             "estado": "Incidencia", 
@@ -26,33 +25,28 @@ const props = defineProps({
         default: 10, // Cambia este valor según tus necesidades
     },
 });
-
-// Definir una referencia reactiva para la página actual
-const currentPage = ref(1);
-
+const searchQuery = ref(''); // referencia para busqueda
+const currentPage = ref(1);  // Definir una referencia reactiva para la página actual
 // Calcular el índice de inicio y final de los elementos a mostrar en la página actual
 const startIndex = computed(() => (currentPage.value - 1) * props.perPage);
 const endIndex = computed(() => Math.min(startIndex.value + props.perPage, props.tableData.length));
-
 // Método para cambiar a la página anterior
 const goToPrevPage = () => {
     if (currentPage.value > 1) {
         currentPage.value--;
     }
 };
-
 // Método para cambiar a la página siguiente
 const goToNextPage = () => {
     if (endIndex.value < props.tableData.length) {
         currentPage.value++;
     }
 };
-
 // Calcular el número total de páginas
 const totalPages = computed(() => {
-    return Math.ceil(props.tableData.length / props.perPage);
+    return Math.ceil(props.tableData.length / props.perPage);  //ceil redondea el valor
 });
-
+// Dato para la llave del dato y direccion para ordenar
 const sortConfig = ref({
     key: '',        // La clave de la columna por la que se está ordenando
     direction: ''   // La dirección de ordenamiento: 'asc' o 'desc'
@@ -64,61 +58,66 @@ const sortByColumn = (key) => {
         sortConfig.value.key = key;
         sortConfig.value.direction = 'asc';
     }
-    
     // Después de ordenar, establecer la página actual en 1
     currentPage.value = 1;
-    // Lógica para ordenar la tabla según el sortConfig actual
-    if (sortConfig.value.key) {
-        // Usar localeCompare para cadenas y comparación numérica para números
-        const isNumeric = !isNaN(parseFloat(props.tableData[0][sortConfig.value.key]));
-        paginatedData.value.sort((a, b) => {
-            const keyA = a[sortConfig.value.key];
-            const keyB = b[sortConfig.value.key];
-
-            if (isNumeric) {
-                // Comparación numérica
-                return sortConfig.value.direction === 'asc' ? keyA - keyB : keyB - keyA;
-            } else {
-                // Comparación alfabética
-                if (sortConfig.value.direction === 'asc') {
-                    return keyA.localeCompare(keyB);
-                } else {
-                    return keyB.localeCompare(keyA);
-                }
-            }
-        });
-    }
 };
 
 // Calcular los datos paginados en función de la página actual y ordenamiento
 const paginatedData = computed(() => {
     const dataCopy = [...props.tableData];
-    
     if (sortConfig.value.key && sortConfig.value.direction) {
         dataCopy.sort((a, b) => {
-            const keyA = a[sortConfig.value.key];
-            const keyB = b[sortConfig.value.key];
-            
+            let keyA = null;
+            let keyB = null;
+            if (sortConfig.value.key.includes('.')) {
+                // Si la clave contiene un punto, divide la clave en partes y accede al campo dinámicamente
+                const keys = sortConfig.value.key.split('.');
+                keyA = a;
+                keyB = b;
+                for (const k of keys) {
+                    keyA = keyA[k];
+                    keyB = keyB[k];
+                }
+            }else{
+                keyA = a[sortConfig.value.key];
+                keyB = b[sortConfig.value.key];
+            }
+            // console.log(keyA);
             // Usar isNumeric para determinar si los datos son numéricos
-            const isNumeric = !isNaN(parseFloat(keyA)) && !isNaN(parseFloat(keyB));
-
+            const isNumeric = !isNaN(parseFloat(keyA)) && !isNaN(parseFloat(keyB));  //
             if (isNumeric) {
                 // Comparación numérica
                 return sortConfig.value.direction === 'asc' ? keyA - keyB : keyB - keyA;
             } else {
                 // Comparación alfabética
-                if (sortConfig.value.direction === 'asc') {
-                    return keyA.localeCompare(keyB);
-                } else {
-                    return keyB.localeCompare(keyA);
-                }
+                return sortConfig.value.direction === 'asc' ? keyA.localeCompare(keyB) : keyB.localeCompare(keyA);
             }
         });
     }
-    return dataCopy.slice(startIndex.value, endIndex.value);
+    // Filtrar los datos basados en el término de búsqueda
+    const filteredData = dataCopy.filter(item => {
+        const searchableFields = Object.values(item).join(' ').toLowerCase(); // Concatenamos todos los valores del objeto en un solo string
+        return searchableFields.includes(searchQuery.value.toLowerCase());
+    });
+    
+    return filteredData.slice(startIndex.value, endIndex.value);  //slice obtiene un parte del array copy
 });
 
-
+// Metodo para obtener dato especifico para mostrar en la tabla
+const getDynamicField = (item, key) => {
+    if (key.includes('.')) {
+        // Si la clave contiene un punto, divide la clave en partes y accede al campo dinámicamente
+        const keys = key.split('.');
+        let value = item;
+        for (const k of keys) {
+            value = value[k];
+        }
+        return value;
+    } else {
+        // Si la clave no contiene un punto, accede directamente al campo
+        return item[key];
+    }
+};
 </script>
 
 <template>
@@ -137,43 +136,35 @@ const paginatedData = computed(() => {
                         </clipPath>
                         </defs>
                     </svg>
-
                     <span>Import</span>
                 </button>
-
                 <button class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-
                     <span>Add vendor</span>
                 </button>
             </div>
         </div>
-
         <div class="mt-6 md:flex md:items-center md:justify-between">
             <div class="inline-flex overflow-hidden bg-white border divide-x rounded-lg dark:bg-gray-900 rtl:flex-row-reverse dark:border-gray-700 dark:divide-gray-700">
                 <button class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 bg-gray-100 sm:text-sm dark:bg-gray-800 dark:text-gray-300">
                     View all
                 </button>
-
                 <button class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
                     Monitored
                 </button>
-
                 <button class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
                     Unmonitored
                 </button>
             </div>
-
             <div class="relative flex items-center mt-4 md:mt-0">
                 <span class="absolute">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mx-3 text-gray-400 dark:text-gray-600">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                     </svg>
                 </span>
-
-                <input type="text" placeholder="Search" class="block w-full py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg md:w-80 placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40">
+                <input v-model="searchQuery" type="text" placeholder="Buscar" class="block w-full py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg md:w-80 placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40">
             </div>
         </div>
     <!-- Tabla -->
@@ -185,14 +176,14 @@ const paginatedData = computed(() => {
                         <thead class="bg-gray-50 dark:bg-gray-800">
                             <tr>
                                 <th 
-                                 v-for="(header, index) in tableHeaders"
-                                 :key="index"
+                                 v-for="(header, _key) in tableKeysHeaders"
+                                 :key="_key"
                                  scope="col" class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                 <button @click="sortByColumn(header)" class="flex items-center gap-x-3 focus:outline-none">
+                                 <button @click="sortByColumn(_key)" class="flex items-center gap-x-3 focus:outline-none">
                                     <span>{{ header }}</span>
                                     <svg class="h-3" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <!-- Lógica para mostrar una flecha ascendente o descendente según el estado de ordenamiento -->
-                                        <path v-if="sortConfig.key === header && sortConfig.direction === 'asc'" 
+                                        <path v-if="sortConfig.key === _key && sortConfig.direction === 'asc'" 
                                             d="M2.13347 0.0999756H2.98516L5.01902 4.79058H3.86226L3.45549 3.79907H1.63772L1.24366 4.79058H0.0996094L2.13347 0.0999756ZM2.54025 1.46012L1.96822 2.92196H3.11227L2.54025 1.46012Z" 
                                             fill="currentColor" stroke="currentColor" stroke-width="0.1" />
                                         <path v-else 
@@ -205,10 +196,12 @@ const paginatedData = computed(() => {
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
                             <tr v-for="(item, rowIndex) in paginatedData" :key="rowIndex">
-                                <td v-for="(cell, cellIndex) in item"
-                                    :key="cellIndex" class="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                                <td v-for="(hea, _key) in tableKeysHeaders"
+                                    :key="_key" class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                     <div class="text-gray-700 dark:text-gray-200">
-                                        {{ cell }}
+                                        <!-- Obtener el campo de manera dinámica según la clave -->
+                                        {{ getDynamicField(item, _key) }}
+                                        <!-- {{ item[_key] }} -->
                                     </div>
                                 </td>
                             </tr>
@@ -219,32 +212,47 @@ const paginatedData = computed(() => {
         </div>
     </div>
     <!-- Paginación -->
-    <!-- Aquí mostramos el número total de páginas y la página actual -->
-    <div class="flex items-center justify-center mt-4 text-gray-800 dark:text-gray-300">
-            <span class="text-sm">Page {{ currentPage }} of {{ totalPages }}</span>
-        </div>
     <div class="flex items-center justify-between mt-6">
-        <a @click="goToPrevPage" class="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
+        <button @click="goToPrevPage" class="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:-scale-x-100">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
             </svg>
-            <span>previous</span>
-        </a>
+            <span>Anterior</span>
+        </button>
         
         <div class="items-center hidden md:flex gap-x-3">
             <!-- Lógica para generar los números de página -->
-            <template v-for="pageNumber in totalPages" :key="pageNumber">
-                <a @click="currentPage = pageNumber"  :class="['px-2 py-1 text-sm rounded-md', { 'bg-blue-100/60 text-white font-bold': pageNumber === currentPage, 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-300 dark:bg-gray-500 hover:bg-gray-100': pageNumber !== currentPage }]">{{ pageNumber }}</a>
+            <template v-if="totalPages <= 10">
+                <template v-for="pageNumber in totalPages" :key="pageNumber">
+                <button @click="currentPage = pageNumber" :class="['px-2 py-1 text-sm rounded-md', { 'bg-gray-800 border-2 border-gray-300 text-white font-bold': pageNumber === currentPage, 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-300 dark:bg-gray-500': pageNumber !== currentPage }]">{{ pageNumber }}</button>
+                </template>
+            </template>
+            <template v-else>
+                <!-- Mostrar el primer número -->
+                <button @click="currentPage = 1" :class="['px-2 py-1 text-sm rounded-md', { 'bg-gray-800 border-2 border-gray-300 text-white font-bold': currentPage === 1, 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-300 dark:bg-gray-500': currentPage !== 1 }]">1</button>
+                <!-- Mostrar "..." si hay números anteriores -->
+                <span v-if="currentPage>4" class="px-2 py-1 text-sm rounded-md text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-300 dark:bg-gray-500">...</span>
+                <!-- Mostrar 2 números anteriores y 2 números siguientes -->
+                <template v-for="offset in [-2, -1, 0, 1, 2]" :key="offset">
+                    <button v-if="currentPage + offset > 1 && currentPage + offset < totalPages" @click="currentPage += offset" :class="['px-2 py-1 text-sm rounded-md', { 'bg-gray-800 border-2 border-gray-300 text-white font-bold': currentPage + offset === currentPage, 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-300 dark:bg-gray-500': currentPage + offset !== currentPage }]">{{ currentPage + offset }}</button>
+                </template>
+                <!-- Mostrar "..." si hay números siguientes -->
+                <span v-if="currentPage<totalPages-3" class="px-2 py-1 text-sm rounded-md text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-300 dark:bg-gray-500">...</span>
+                <!-- Mostrar el último número -->
+                <button @click="currentPage = totalPages" :class="['px-2 py-1 text-sm rounded-md', { 'bg-gray-800 border-2 border-gray-300 text-white font-bold': currentPage === totalPages, 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-300 dark:bg-gray-500': currentPage !== totalPages }]">{{ totalPages }}</button>
             </template>
         </div>
-        <a @click="goToNextPage" class="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
-            <span>Next</span>
+        <button @click="goToNextPage" class="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
+            <span>Siguiente</span>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:-scale-x-100">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
             </svg>
-        </a>
+        </button>
     </div>
-
+    <!-- Aquí mostramos el número total de páginas y la página actual -->
+    <div class="flex items-center justify-center mt-4 text-gray-800 dark:text-gray-300">
+        <span class="text-sm">Página {{ currentPage }} de {{ totalPages }}</span>
+    </div>
 </section>
 </template>
 
