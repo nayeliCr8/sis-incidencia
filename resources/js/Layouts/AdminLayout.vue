@@ -29,16 +29,18 @@ const logout = () => {
 
 <template>
     <div class="w-full h-full">
-        <aside :class="{'w-100':showingNavigationDropdown,'ml-[-100%]':!showingNavigationDropdown}" class="fixed z-10 top-0 pb-3 px-6 flex flex-col justify-between h-screen border-r bg-white transition duration-300 lg:ml-0 md:w-4/12 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]">
-            <div>
-                <div class="mt-4 text-center my-2">
-                    <img :src="$page.props.auth.user.profile_photo_url" :alt="$page.props.auth.user.name" class="w-10 h-10 m-auto rounded-full object-cover lg:w-28 lg:h-28">
-                    <h5 class="hidden mt-4 text-xl font-semibold text-gray-600 lg:block">{{ $page.props.auth.user.name }}</h5>
-                    <span class="hidden text-gray-400 lg:block">Admin</span>
-                </div>
-             <ul class="space-y-2 tracking-wide mt-8">
+        <aside :class="{'w-100':showingNavigationDropdown,'ml-[-100%]':!showingNavigationDropdown}" 
+        class="fixed z-10 pb-3 pl-6 flex flex-col justify-between h-screen border-r bg-white transition duration-300 lg:ml-0 md:w-4/12 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]">
+            <div class="mt-4 text-center my-2">
+                <img :src="$page.props.auth.user.profile_photo_url" :alt="$page.props.auth.user.name" class="w-10 h-10 m-auto rounded-full object-cover lg:w-28 lg:h-28">
+                <h5 class="hidden mt-4 text-xl font-semibold text-gray-600 lg:block">{{ $page.props.auth.user.name }}</h5>
+                <span class="hidden text-gray-400 lg:block">Admin</span>
+            </div>
+            <div class="overflow-auto p-2">
+             <ul class="space-y-2 tracking-wide mt-2">
                  <li>
-                     <SederbarLink :href="route('admin.prueba')" :active="route().current('admin.prueba')" aria-label="dashboard" class="relative px-4 py-3 flex items-center space-x-4 rounded-xl">
+                     <div>
+                        <SederbarLink :href="route('admin.prueba')" :active="route().current('admin.prueba')" aria-label="dashboard" class="relative px-4 py-3 flex items-center space-x-4 rounded-xl">
                          <svg class="-ml-1 h-6 w-6" viewBox="0 0 24 24" fill="none">
                              <path d="M6 8a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V8ZM6 15a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-1Z" class="fill-current text-cyan-400 dark:fill-slate-600"></path>
                              <path d="M13 8a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2V8Z" class="fill-current text-cyan-200 group-hover:text-cyan-300"></path>
@@ -46,120 +48,107 @@ const logout = () => {
                          </svg>
                          <span class="-mr-1 font-medium">Dashboard</span>
                      </SederbarLink>
+                     </div>
                  </li>
                  <li>
-                     <SederbarLink :href="route('admin.etiqueta.index')" :active="route().current('admin.etiqueta.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
-                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                             <path class="fill-current text-gray-300 group-hover:text-cyan-300" fill-rule="evenodd" d="M2 6a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1H8a3 3 0 00-3 3v1.5a1.5 1.5 0 01-3 0V6z" clip-rule="evenodd" />
-                             <path class="fill-current text-gray-600 group-hover:text-cyan-800" d="M6 12a2 2 0 012-2h8a2 2 0 012 2v2a2 2 0 01-2 2H2h2a2 2 0 002-2v-2z" />
-                         </svg>
-                         <span class="group-hover:text-gray-700">Categories</span>
-                     </SederbarLink>
-                 </li>
-                 <li>
-                    <SederbarLink :href="route('admin.incidencia.index')" :active="route().current('admin.incidencia.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
-                        <!-- Nuevo ícono SVG para Incidencias -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4" viewBox="0 0 640 512">
-                        <path class="fill-current text-gray-400 group-hover:text-cyan-300" d="M384 96V320H64L64 96H384zM64 32C28.7 32 0 60.7 0 96V320c0 35.3 28.7 64 64 64H181.3l-10.7 32H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H352c17.7 0 32-14.3 32-32s-14.3-32-32-32H277.3l-10.7-32H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64z"/> 
-                        <path class="fill-current text-gray-600 group-hover:text-cyan-800" d="M 534 0 c -26.5 0 -48 21.5 -48 48 V 432 c 0 26.5 21.5 48 48 48 h 64 c 26.5 0 48 -21.5 48 -48 V 48 C 646 21 624.5 0 598 0 H 598 z m 16 64 h 32 c 8.8 0 16 7.2 16 16 s -7.2 16 -16 16 H 550 c -8.8 0 -16 -7.2 -16 -16 s 7.2 -16 16 -16 z m -16 80 c 0 -8.8 7.2 -16 16 -16 h 32 c 8.8 0 16 7.2 16 16 s -7.2 16 -16 16 H 550 c -8.8 0 -16 -7.2 -16 -16 z m 32 160 a 32 32 0 1 1 0 64 a 32 32 0 1 1 0 -64 z"/>
-                        </svg>
-                        <span class="group-hover:text-gray-700">Incidencias</span>
-                    </SederbarLink>
-                </li>
-                 <!-- <li>
-                     <a href="#" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
-                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                             <path class="fill-current text-gray-600 group-hover:text-cyan-600" fill-rule="evenodd" d="M2 5a2 2 0 012-2h8a2 2 0 012 2v10a2 2 0 002 2H4a2 2 0 01-2-2V5zm3 1h6v4H5V6zm6 6H5v2h6v-2z" clip-rule="evenodd" />
-                             <path class="fill-current text-gray-300 group-hover:text-cyan-300" d="M15 7h1a2 2 0 012 2v5.5a1.5 1.5 0 01-3 0V7z" />
-                         </svg>
-                         <span class="group-hover:text-gray-700">Reports</span>
-                     </a>
-                 </li>
-                 <li>
-                     <a href="#" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
-                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                             <path class="fill-current text-gray-600 group-hover:text-cyan-600" d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z" />
-                             <path class="fill-current text-gray-300 group-hover:text-cyan-300" d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z" />
-                         </svg>
-                         <span class="group-hover:text-gray-700">Other data</span>
-                     </a>
-                 </li>
-                 <li>
-                     <a href="#" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
-                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                             <path class="fill-current text-gray-300 group-hover:text-cyan-300" d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
-                             <path class="fill-current text-gray-600 group-hover:text-cyan-600" fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd" />
-                         </svg>
-                         <span class="group-hover:text-gray-700">Finance</span>
-                     </a>
-                 </li> -->
-                 <li>
-                    <SederbarLink :href="route('admin.users.index')" :active="route().current('admin.users.*')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
-                        <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke-width="1.5"
-                                stroke="currentColor"
-                                class="w-6 h-6"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
-                                />
+                     <div>
+                        <SederbarLink :href="route('admin.etiqueta.index')" :active="route().current('admin.etiqueta.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path class="fill-current text-gray-300 group-hover:text-cyan-300" fill-rule="evenodd" d="M2 6a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1H8a3 3 0 00-3 3v1.5a1.5 1.5 0 01-3 0V6z" clip-rule="evenodd" />
+                                <path class="fill-current text-gray-600 group-hover:text-cyan-800" d="M6 12a2 2 0 012-2h8a2 2 0 012 2v2a2 2 0 01-2 2H2h2a2 2 0 002-2v-2z" />
                             </svg>
-                        <span class="group-hover:text-gray-700">Usuarios</span>
-                    </SederbarLink>
+                            <span class="group-hover:text-gray-700">Categories</span>
+                        </SederbarLink>
+                     </div>
+                 </li>
+                 <li>
+                    <div>
+                        <SederbarLink :href="route('admin.incidencia.index')" :active="route().current('admin.incidencia.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
+                            <!-- Nuevo ícono SVG para Incidencias -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4" viewBox="0 0 640 512">
+                            <path class="fill-current text-gray-400 group-hover:text-cyan-300" d="M384 96V320H64L64 96H384zM64 32C28.7 32 0 60.7 0 96V320c0 35.3 28.7 64 64 64H181.3l-10.7 32H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H352c17.7 0 32-14.3 32-32s-14.3-32-32-32H277.3l-10.7-32H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64z"/> 
+                            <path class="fill-current text-gray-600 group-hover:text-cyan-800" d="M 534 0 c -26.5 0 -48 21.5 -48 48 V 432 c 0 26.5 21.5 48 48 48 h 64 c 26.5 0 48 -21.5 48 -48 V 48 C 646 21 624.5 0 598 0 H 598 z m 16 64 h 32 c 8.8 0 16 7.2 16 16 s -7.2 16 -16 16 H 550 c -8.8 0 -16 -7.2 -16 -16 s 7.2 -16 16 -16 z m -16 80 c 0 -8.8 7.2 -16 16 -16 h 32 c 8.8 0 16 7.2 16 16 s -7.2 16 -16 16 H 550 c -8.8 0 -16 -7.2 -16 -16 z m 32 160 a 32 32 0 1 1 0 64 a 32 32 0 1 1 0 -64 z"/>
+                            </svg>
+                            <span class="group-hover:text-gray-700">Incidencias</span>
+                        </SederbarLink>
+                    </div>
                 </li>
                  <li>
-                    <SederbarLink :href="route('admin.roles.index')" :active="route().current('admin.roles.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
-                        <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="w-6 h-6"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M4.5 12a7.5 7.5 0 0015 0m-15 0a7.5 7.5 0 1115 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077l1.41-.513m14.095-5.13l1.41-.513M5.106 17.785l1.15-.964m11.49-9.642l1.149-.964M7.501 19.795l.75-1.3m7.5-12.99l.75-1.3m-6.063 16.658l.26-1.477m2.605-14.772l.26-1.477m0 17.726l-.26-1.477M10.698 4.614l-.26-1.477M16.5 19.794l-.75-1.299M7.5 4.205L12 12m6.894 5.785l-1.149-.964M6.256 7.178l-1.15-.964m15.352 8.864l-1.41-.513M4.954 9.435l-1.41-.514M12.002 12l-3.75 6.495"
-                        />
-                    </svg>
-                        <span class="group-hover:text-gray-700">Roles</span>
-                    </SederbarLink>
+                    <div>
+                        <SederbarLink :href="route('admin.users.index')" :active="route().current('admin.users.*')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
+                            <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="w-6 h-6"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
+                                    />
+                                </svg>
+                            <span class="group-hover:text-gray-700">Usuarios</span>
+                        </SederbarLink>
+                    </div>
                 </li>
-                <li>
-                    <SederbarLink :href="route('admin.permissions.index')" :active="route().current('admin.permissions.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
-                        <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke-width="1.5"
-                                stroke="currentColor"
-                                class="w-6 h-6"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M7.864 4.243A7.5 7.5 0 0119.5 10.5c0 2.92-.556 5.709-1.568 8.268M5.742 6.364A7.465 7.465 0 004.5 10.5a7.464 7.464 0 01-1.15 3.993m1.989 3.559A11.209 11.209 0 008.25 10.5a3.75 3.75 0 117.5 0c0 .527-.021 1.049-.064 1.565M12 10.5a14.94 14.94 0 01-3.6 9.75m6.633-4.596a18.666 18.666 0 01-2.485 5.33"
-                                />
-                            </svg>
-                        <span class="group-hover:text-gray-700">Permisos</span>
-                    </SederbarLink>
-                </li>
-                <li>
-                    <SederbarLink :href="route('admin.sedes.index')" :active="route().current('admin.sedes.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path class="fill-current text-gray-300 group-hover:text-cyan-300" fill-rule="evenodd" d="M2 6a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1H8a3 3 0 00-3 3v1.5a1.5 1.5 0 01-3 0V6z" clip-rule="evenodd" />
-                            <path class="fill-current text-gray-600 group-hover:text-cyan-800" d="M6 12a2 2 0 012-2h8a2 2 0 012 2v2a2 2 0 01-2 2H2h2a2 2 0 002-2v-2z" />
+                 <li>
+                    <div>
+                        <SederbarLink :href="route('admin.roles.index')" :active="route().current('admin.roles.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
+                            <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="w-6 h-6"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M4.5 12a7.5 7.5 0 0015 0m-15 0a7.5 7.5 0 1115 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077l1.41-.513m14.095-5.13l1.41-.513M5.106 17.785l1.15-.964m11.49-9.642l1.149-.964M7.501 19.795l.75-1.3m7.5-12.99l.75-1.3m-6.063 16.658l.26-1.477m2.605-14.772l.26-1.477m0 17.726l-.26-1.477M10.698 4.614l-.26-1.477M16.5 19.794l-.75-1.299M7.5 4.205L12 12m6.894 5.785l-1.149-.964M6.256 7.178l-1.15-.964m15.352 8.864l-1.41-.513M4.954 9.435l-1.41-.514M12.002 12l-3.75 6.495"
+                            />
                         </svg>
-                        <span class="group-hover:text-gray-700">Sedes</span>
-                    </SederbarLink>
+                            <span class="group-hover:text-gray-700">Roles</span>
+                        </SederbarLink>
+                    </div>
                 </li>
                 <li>
+                    <div>
+                        <SederbarLink :href="route('admin.permissions.index')" :active="route().current('admin.permissions.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
+                            <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="w-6 h-6"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M7.864 4.243A7.5 7.5 0 0119.5 10.5c0 2.92-.556 5.709-1.568 8.268M5.742 6.364A7.465 7.465 0 004.5 10.5a7.464 7.464 0 01-1.15 3.993m1.989 3.559A11.209 11.209 0 008.25 10.5a3.75 3.75 0 117.5 0c0 .527-.021 1.049-.064 1.565M12 10.5a14.94 14.94 0 01-3.6 9.75m6.633-4.596a18.666 18.666 0 01-2.485 5.33"
+                                    />
+                                </svg>
+                            <span class="group-hover:text-gray-700">Permisos</span>
+                        </SederbarLink>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <SederbarLink :href="route('admin.sedes.index')" :active="route().current('admin.sedes.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path class="fill-current text-gray-300 group-hover:text-cyan-300" fill-rule="evenodd" d="M2 6a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1H8a3 3 0 00-3 3v1.5a1.5 1.5 0 01-3 0V6z" clip-rule="evenodd" />
+                                <path class="fill-current text-gray-600 group-hover:text-cyan-800" d="M6 12a2 2 0 012-2h8a2 2 0 012 2v2a2 2 0 01-2 2H2h2a2 2 0 002-2v-2z" />
+                            </svg>
+                            <span class="group-hover:text-gray-700">Sedes</span>
+                        </SederbarLink>
+                    </div>
+                </li>
+                <li>
+                   <div>
                     <SederbarLink :href="route('admin.oficinas.index')" :active="route().current('admin.oficinas.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path class="fill-current text-gray-300 group-hover:text-cyan-300" fill-rule="evenodd" d="M2 6a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1H8a3 3 0 00-3 3v1.5a1.5 1.5 0 01-3 0V6z" clip-rule="evenodd" />
@@ -167,8 +156,10 @@ const logout = () => {
                         </svg>
                         <span class="group-hover:text-gray-700">Oficinas</span>
                     </SederbarLink>
+                   </div>
                 </li>
                 <li>
+                   <div>
                     <SederbarLink :href="route('admin.equipos.index')" :active="route().current('admin.equipos.*')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path class="fill-current text-gray-300 group-hover:text-cyan-300" fill-rule="evenodd" d="M2 6a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1H8a3 3 0 00-3 3v1.5a1.5 1.5 0 01-3 0V6z" clip-rule="evenodd" />
@@ -176,6 +167,7 @@ const logout = () => {
                         </svg>
                         <span class="group-hover:text-gray-700">Equipos</span>
                     </SederbarLink>
+                   </div>
                 </li>
             </ul>
          </div>
@@ -233,15 +225,34 @@ const logout = () => {
           </div>
       </div>
   
-            <div class="px-6 pt-6 2xl:container">
-                <slot>
-                    
-                </slot>
-            </div>
+        <div class="px-6 pt-6 2xl:container">
+            <slot>
+                
+            </slot>
+        </div>
         </div>
     </div>
 </template>
 
-<style lang="scss" scoped>
+<style>
 
+body::-webkit-scrollbar{
+    width: 10px;
+}
+
+body::-webkit-scrollbar-thumb{
+    background: #16222A;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to top, #3A6073, #16222A);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to top, #3A6073, #16222A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    border-radius: 8px;
+}
+
+div.overflow-auto::-webkit-scrollbar{
+    width: 5px;
+}
+
+div.overflow-auto::-webkit-scrollbar-thumb{
+    background: linear-gradient(180deg, rgba(9,151,170,1) 0%, rgba(103,232,249,1) 49%);
+    border-radius: 8px;
+}
 </style>
