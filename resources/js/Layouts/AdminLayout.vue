@@ -170,7 +170,7 @@ const logout = () => {
                    </div>
                 </li>
             </ul>
-         </div>
+            </div>
      
          <div class="px-6 -mx-6 pt-4 flex justify-between items-center border-t">
              <form @submit.prevent="logout">

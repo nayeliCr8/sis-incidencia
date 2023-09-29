@@ -8,6 +8,7 @@ use App\Models\Resuelto;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use PhpParser\Node\Expr\Cast\String_;
 
@@ -67,18 +68,25 @@ class IncidenciaController extends Controller
      */
     public function update(Request $request, Incidencia $incidencia)
     {
+
+       
         $incidencia->estado = $request->estado;
         
         $incidencia->save();
 
-        // return Redirect::back();
+        // \dd($request);
+        $img = $request->file('evidencia')->store('public/imagen');
+        $image = Storage::url($img);
+
         $resuelto = new Resuelto();
-        $resuelto->evidencia = $request->evidencia;
+        $resuelto->evidencia = $image;
         $resuelto->descripcion = $request->descripcion;
         $resuelto->incidencia_id = $incidencia->id;
         $resuelto->user_id = auth()->user()->id;
 
         $resuelto->save();
+
+        // return $request->all();
     }
 
     /**

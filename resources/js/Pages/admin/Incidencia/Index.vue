@@ -22,12 +22,34 @@ const props = defineProps({
     estados: Object,
 });
 
-console.log(props.incidencias[0]);
 const form = useForm({
+    _method: 'PUT',
     estado: "",
-    evidencia: "",
+    evidencia: null,
     descripcion: "",
 });
+const photoInput = ref(null);
+const photoPreview = ref(null);
+
+const selectNewPhoto = () => {
+    photoInput.value.click();
+};
+
+const updatePhotoPreview = () => {
+    const photo = photoInput.value.files[0];
+
+    if (! photo) return;
+
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+        photoPreview.value = e.target.result;
+    };
+
+    reader.readAsDataURL(photo);
+};
+console.log(props.incidencias[0]);
+
 const id = ref();
 const tablekeysheaders= ref({
         'estado':'Estado','nivel':'Nivel','user.perfil.nombre':'Usuario','etiqueta.nombre':'Etiqueta'
@@ -87,7 +109,7 @@ const FormStore = (val) => {
 };
 
 const save = () => {
-    form.put(route('admin.incidencias.update',id.value), {
+    form.post(route('admin.incidencias.update', id.value), {
         onSuccess: () => {
             form.get(route('admin.incidencias.update', id.value));
             closeModal()
@@ -95,6 +117,23 @@ const save = () => {
     });
 };
 
+
+
+const deletePhoto = () => {
+    router.delete(route('current-user-photo.destroy'), {
+        preserveScroll: true,
+        onSuccess: () => {
+            photoPreview.value = null;
+            clearPhotoFileInput();
+        },
+    });
+};
+
+const test = (e) => {
+    // console.log();
+    form.evidencia = e.target.files[0];
+    //.target.files[0]
+}
 </script>
 <template>
     <Head title="Incidencias"/>
@@ -118,7 +157,33 @@ const save = () => {
                         </div>
                         <div class="mb-6">
                           <InputLabel>Evidencia</InputLabel>
-                          <TextInput class="w-full" v-model="form.evidencia"></TextInput>
+                          <input
+                          ref="photoInput"
+                          type="file"
+                          class="hidden"
+                          @input="test"
+                          @change="updatePhotoPreview"
+                      >
+      
+                      <InputLabel for="photo" value="Photo" />
+      
+                      <!-- Current Profile Photo -->
+                      <!-- <div v-show="! photoPreview" class="mt-2">
+                          <img :src="user.profile_photo_url" :alt="user.name" class="rounded-full h-20 w-20 object-cover">
+                      </div> -->
+      
+                      <!-- New Profile Photo Preview -->
+                      <div v-show="photoPreview" class="mt-2">
+                          <span
+                              class="block rounded-full w-20 h-20 bg-cover bg-no-repeat bg-center"
+                              :style="'background-image: url(\'' + photoPreview + '\');'"
+                          />
+                      </div>
+      
+                      <SecondaryButton class="mt-2 mr-2" type="button" @click.prevent="selectNewPhoto">
+                          Select A New Photo
+                      </SecondaryButton>
+                          <!-- <TextInput class="w-full" v-model="form.evidencia"></TextInput> -->
                           <InputError class="mt-2" :message="form.errors.evidencia" />
                         </div>
                         <div class="mb-6">
