@@ -1,6 +1,6 @@
 <script setup>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
-import {Head, useForm} from "@inertiajs/vue3";
+import {Head, useForm, router } from "@inertiajs/vue3";
 
 import Table from "@/Components/Table.vue";
 import TableRow from "@/Components/TableRow.vue";
@@ -15,14 +15,20 @@ import Modal from "@/Components/Modal.vue";
 import TextInput from "@/Components/TextInput.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import InputError from "@/Components/InputError.vue";
 const displayingToken = ref(false);
 const props = defineProps({
     incidencias: Object,
+    estados: Object,
 });
 
 console.log(props.incidencias[0]);
-const form = useForm({});
-
+const form = useForm({
+    estado: "",
+    evidencia: "",
+    descripcion: "",
+});
+const id = ref();
 const tablekeysheaders= ref({
         'estado':'Estado','nivel':'Nivel','user.perfil.nombre':'Usuario','etiqueta.nombre':'Etiqueta'
     }
@@ -41,12 +47,12 @@ const customClassColum= ref({
     }
 );
 const customButtons= ref([{
-        label: "Editar",
+        label: "Resolver",
         action: 'editar',
         buttonClasses: "px-2 py-1 text-sm rounded-md bg-green-500 text-white hover:bg-green-600",
     },
     {
-        label: "Eliminar",
+        label: "Ver información",
         action: 'eliminar',
         buttonClasses: "px-2 py-1 text-sm rounded-md bg-red-500 text-white hover:bg-red-600",
     },
@@ -64,17 +70,31 @@ const eli=(val)=>{
 
 const showModel = ref(false);
 
-const FormStore = (val) => {
-  showModel.value = true;
-  const item = props.incidencias.find(incidencia => incidencia.id === val); // para buscar un dato por su id
-    console.log(item);
-};
-
-
 const closeModal = () => {
   showModel.value = false;
   form.reset();
 };
+
+
+const FormStore = (val) => {
+  showModel.value = true;
+    const item = props.incidencias.find(incidencias => incidencias.id === val); // para buscar un dato por su id
+    id.value = item.id;
+    form.estado = item.estado;
+    form.evidencia = "",
+    form.descripcion = "",
+    console.log(item.id);
+};
+
+const save = () => {
+    form.put(route('admin.incidencias.update',id.value), {
+        onSuccess: () => {
+            form.get(route('admin.incidencias.update', id.value));
+            closeModal()
+        },
+    });
+};
+
 </script>
 <template>
     <Head title="Incidencias"/>
@@ -84,18 +104,31 @@ const closeModal = () => {
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="flex justify-end mr-6">
                     <!-- <h1>Users Index Page</h1> -->
-                    <SecondaryButton @click="FormStore">Registrar Sede</SecondaryButton>
+                    <!-- <SecondaryButton @click="FormStore">Registrar Sede</SecondaryButton> -->
                     <Modal :show="showModel" @close="closeModal">
                       <div class="p-4">
                         <div class="mb-6">
-                          <InputLabel>Nombre</InputLabel>
-                          <TextInput class="w-full" v-model="form.nombre"></TextInput>
-                          <InputError class="mt-2" :message="form.errors.nombre" />
+                            <InputLabel>Estado</InputLabel>
+                            <select v-model="form.estado" id="estado" name="estado" class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                              <option v-for="estado in estados" :key="estado.id">
+                                {{ estado }}
+                              </option>
+                            </select>
+                            <InputError class="mt-2" :message="form.errors.estado" />
                         </div>
                         <div class="mb-6">
-                          <InputLabel>Dirección</InputLabel>
-                          <TextInput class="w-full" v-model="form.direccion"></TextInput>
-                          <InputError class="mt-2" :message="form.errors.direccion" />
+                          <InputLabel>Evidencia</InputLabel>
+                          <TextInput class="w-full" v-model="form.evidencia"></TextInput>
+                          <InputError class="mt-2" :message="form.errors.evidencia" />
+                        </div>
+                        <div class="mb-6">
+                            <InputLabel>Descripción</InputLabel>
+                            <textarea
+                              class="w-full rounded dark:bg-gray-800 text-white"
+                              rows="5"
+                              v-model="form.descripcion"
+                            />
+                            <InputError class="mt-2" :message="form.errors.descripcion" />
                         </div>
                         <div class="mt-6 flex space-x-4 justify-end">
                           <SecondaryButton @click="closeModal">Cancelar</SecondaryButton>

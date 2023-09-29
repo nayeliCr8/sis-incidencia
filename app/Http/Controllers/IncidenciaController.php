@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Incidencia;
 use App\Models\Perfil;
+use App\Models\Resuelto;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use PhpParser\Node\Expr\Cast\String_;
 
@@ -22,8 +24,10 @@ class IncidenciaController extends Controller
             'user',
                 'user.perfil'
         )->get();
+
+        $estados = Incidencia::$estados;
         // dd($incidencias);
-        return Inertia::render('admin/Incidencia/Index',compact('incidencias'));
+        return Inertia::render('admin/Incidencia/Index',compact('incidencias','estados'));
     }
 
     /**
@@ -61,9 +65,20 @@ class IncidenciaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, String $incidencia)
+    public function update(Request $request, Incidencia $incidencia)
     {
-        dd($incidencia);
+        $incidencia->estado = $request->estado;
+        
+        $incidencia->save();
+
+        // return Redirect::back();
+        $resuelto = new Resuelto();
+        $resuelto->evidencia = $request->evidencia;
+        $resuelto->descripcion = $request->descripcion;
+        $resuelto->incidencia_id = $incidencia->id;
+        $resuelto->user_id = auth()->user()->id;
+
+        $resuelto->save();
     }
 
     /**
