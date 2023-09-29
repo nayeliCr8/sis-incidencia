@@ -17,6 +17,8 @@ const props = defineProps({
   sedes: Object,
 });
 
+console.log(props.oficinas);
+
 const id = ref();
 const option = ref(1)
 // const nombre = ref();
@@ -119,6 +121,8 @@ const save = () => {
               <TableHeaderCell>Id</TableHeaderCell>
               <TableHeaderCell>Oficina</TableHeaderCell>
               <TableHeaderCell>Sede</TableHeaderCell>
+              <TableHeaderCell>Personal</TableHeaderCell>
+              <TableHeaderCell>Equipos</TableHeaderCell>
               <TableHeaderCell>Action</TableHeaderCell>
             </TableRow>
           </template>
@@ -127,6 +131,16 @@ const save = () => {
               <TableDataCell class="space-x-4">{{ oficina.id }}</TableDataCell>
               <TableDataCell class="space-x-4">{{ oficina.nombre }}</TableDataCell>
               <TableDataCell class="space-x-4">{{ oficina.sede.nombre }}</TableDataCell>
+              <TableDataCell >
+                <div v-for="per,ind in oficina.perfils" :key="ind">
+                  {{ per.nombre }}
+                </div> 
+              </TableDataCell>
+              <TableDataCell >
+                <div v-for="eq,ind in oficina.equipos" :key="ind">
+                  {{ eq.tipo_equipo }}
+                </div> 
+              </TableDataCell>
               <TableDataCell class="space-x-4">
 
                 <PrimaryButton @click="FormUpdate(0,oficina)">Editar</PrimaryButton>

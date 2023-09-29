@@ -1,6 +1,6 @@
 <script setup>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
-import {Head} from "@inertiajs/vue3";
+import {Head, useForm} from "@inertiajs/vue3";
 
 import Table from "@/Components/Table.vue";
 import TableRow from "@/Components/TableRow.vue";
@@ -16,6 +16,9 @@ const displayingToken = ref(false);
 const props = defineProps({
     incidencias: Object,
 });
+
+console.log(props.incidencias[0]);
+const form = useForm({});
 
 const tablekeysheaders= ref({
         'estado':'Estado','nivel':'Nivel','user.perfil.nombre':'Usuario','etiqueta.nombre':'Etiqueta'
@@ -49,6 +52,7 @@ const customButtons= ref([{
 const edit=(val)=>{
     const item = props.incidencias.find(incidencia => incidencia.id === val); // para buscar un dato por su id
     console.log(item);
+    form.put(route('admin.incidencia.update',val));
 } 
 const eli=(val)=>{
     console.log('tengo q eliminar');

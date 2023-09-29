@@ -18,12 +18,22 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@gmail.com',
             'password' => bcrypt('test@gmail.com')
         ])->assignRole('tecnico');
+        \App\Models\User::factory()->create([
+            'name' => 'Joel_practicante',
+            'email' => 'practicante@gmail.com',
+            'password' => bcrypt('practicante')
+        ])->assignRole('practicante');
+        \App\Models\User::factory()->create([
+            'name' => 'Joel_invitado',
+            'email' => 'invitado@gmail.com',
+            'password' => bcrypt('invitado')
+        ])->assignRole('invitado');
         \App\Models\User::factory(10)->create(); //->assignRole('invitado');
         \App\Models\Etiqueta::factory(5)->create();
-        \App\Models\Sede::factory(10)->create();
+        \App\Models\Sede::factory(5)->create();
         \App\Models\Oficina::factory(30)->create();
         \App\Models\Perfil::factory(12)->create();
-        \App\Models\Equipo::factory(50)->create();
+        \App\Models\Equipo::factory(100)->create();
         \App\Models\Incidencia::factory(500)->create();
     }
 }

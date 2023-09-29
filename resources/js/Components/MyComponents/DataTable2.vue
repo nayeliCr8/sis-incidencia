@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineEmits , onMounted, reactive, ref, watch, watchEffect } from 'vue';
+import { computed, reactive, ref, watch, watchEffect } from 'vue';
 // Define una referencia para guardar las emisiones
 const emit = defineEmits(['editar', 'eliminar']);
 
@@ -160,7 +160,6 @@ let totalPages = computed(() => {
  
 const abrirBusColum = (key) => {
     openSearchColumns.value[key] = !openSearchColumns.value[key];
-    columnSearchInputs.value[key] = '';
     // Usar nextTick para enfocar el campo de búsqueda después de que se muestre
     watchEffect(() => {
         if (searchInputRefs[key]) {
@@ -219,7 +218,7 @@ const hayValorSearchInputs = computed(() => {
             <span class="text-sm m-2 text-gray-800 dark:text-gray-300">{{ len_table }} Datos</span>
         </div>
         <div class="flex items-center">
-            <button v-if="hayValorSearchInputs" @click="limpiarFiltros" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
+            <button v-if="hayValorSearchInputs" @click="limpiarFiltros" class="flex items-center justify-center px-2 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
                 <span>Limpiar Filtros</span>
             </button>
             <div class="relative flex items-center mt-4 md:mt-0">
@@ -235,32 +234,36 @@ const hayValorSearchInputs = computed(() => {
     </div>
     <!-- Tabla -->
     <div class="flex flex-col my-2">
-        <div class="overflow-x-autol scroll-container">
-            <div class="inline-block min-w-full py-2 align-middle">
+        <div class="overflow-x-auto scroll-container">
+            <div class="inline-block min-w-full align-middle">
                 <div class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-xl">
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead class="bg-gray-50 dark:bg-gray-800">
                             <tr>
-                                <th v-if="numerarRow" scope="col" class="relative py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                <th v-if="numerarRow" scope="col" class="relative py-3.5 px-4 text-base font-bold text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                     #
                                 </th>
                                 <th v-for="(header, _key) in tableKeysHeaders" :key="_key"
                                  scope="col" class="relative py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                     <div class="flex items-center mt-4 md:mt-0">
-                                        <button @click="sortByColumn(_key)" class="flex items-center gap-x-3 focus:outline-none font-bold">
+                                        <button @click="sortByColumn(_key)" class="flex text-base items-center gap-x-2 focus:outline-none font-bold">
                                             <span class="font-bold">{{ header }}</span>
-                                            <svg class="h-3" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <!-- Lógica para mostrar una flecha ascendente o descendente según el estado de ordenamiento -->
+                                            <svg v-if="sortConfig.key === _key && sortConfig.direction === 'asc'" class="w-5"
+                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" fill="currentColor" stroke="currentColor" stroke-width="0.1"><path d="M183.6 469.6C177.5 476.2 169 480 160 480s-17.5-3.8-23.6-10.4l-88-96c-11.9-13-11.1-33.3 2-45.2s33.3-11.1 45.2 2L128 365.7V64c0-17.7 14.3-32 32-32s32 14.3 32 32V365.7l32.4-35.4c11.9-13 32.2-13.9 45.2-2s13.9 32.2 2 45.2l-88 96zM320 320c0-17.7 14.3-32 32-32H480c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9L429.3 416H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H352c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9L402.7 352H352c-17.7 0-32-14.3-32-32zM416 32c12.1 0 23.2 6.8 28.6 17.7l64 128 16 32c7.9 15.8 1.5 35-14.3 42.9s-35 1.5-42.9-14.3L460.2 224H371.8l-7.2 14.3c-7.9 15.8-27.1 22.2-42.9 14.3s-22.2-27.1-14.3-42.9l16-32 64-128C392.8 38.8 403.9 32 416 32zM395.8 176h40.4L416 135.6 395.8 176z"/></svg>
+                                            <svg v-else class="w-5"
+                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" fill="currentColor" stroke="currentColor" stroke-width="0.1"><path d="M183.6 469.6C177.5 476.2 169 480 160 480s-17.5-3.8-23.6-10.4l-88-96c-11.9-13-11.1-33.3 2-45.2s33.3-11.1 45.2 2L128 365.7V64c0-17.7 14.3-32 32-32s32 14.3 32 32V365.7l32.4-35.4c11.9-13 32.2-13.9 45.2-2s13.9 32.2 2 45.2l-88 96zM320 64c0-17.7 14.3-32 32-32H480c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9L429.3 160H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H352c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9L402.7 96H352c-17.7 0-32-14.3-32-32zm96 192c12.1 0 23.2 6.8 28.6 17.7l64 128 16 32c7.9 15.8 1.5 35-14.3 42.9s-35 1.5-42.9-14.3L460.2 448H371.8l-7.2 14.3c-7.9 15.8-27.1 22.2-42.9 14.3s-22.2-27.1-14.3-42.9l16-32 64-128c5.4-10.8 16.5-17.7 28.6-17.7zM395.8 400h40.4L416 359.6 395.8 400z"/></svg>
+                                            <!-- <svg class="h-3" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path v-if="sortConfig.key === _key && sortConfig.direction === 'asc'" 
                                                     d="M2.13347 0.0999756H2.98516L5.01902 4.79058H3.86226L3.45549 3.79907H1.63772L1.24366 4.79058H0.0996094L2.13347 0.0999756ZM2.54025 1.46012L1.96822 2.92196H3.11227L2.54025 1.46012Z" 
                                                     fill="currentColor" stroke="currentColor" stroke-width="0.1" />
                                                 <path v-else 
                                                     d="M0.722656 9.60832L3.09974 6.78633H0.811638V5.87109H4.35819V6.78633L2.01925 9.60832H4.43446V10.5617H0.722656V9.60832Z" 
                                                     fill="currentColor" stroke="currentColor" stroke-width="0.1" />
-                                            </svg>
+                                            </svg> -->
                                         </button>
-                                        <button @click="abrirBusColum(_key)">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mx-3 text-gray-400 dark:text-gray-600">
+                                            
+                                        <button @click="abrirBusColum(_key)" class="bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-900 dark:text-white rounded-xl ml-1 py-1 px-3 " :class="columnSearchInputs[_key]?'border-gray-700 dark:border-gray-200 border-2':''">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                                             </svg>
                                         </button>
@@ -276,13 +279,13 @@ const hayValorSearchInputs = computed(() => {
                                         </div>
                                     </div>
                                 </th>
-                                <th v-if="customButtons" scope="col" class="relative py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                <th v-if="customButtons" scope="col" class="relative py-3.5 px-4 text-base font-bold text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                     Acciones
                                 </th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                            <tr v-for="(row, rowIndex) in paginatedData" :key="rowIndex">
+                            <tr v-for="(row, rowIndex) in paginatedData" :key="rowIndex" class="dark:hover:bg-gray-800">
                                 <td v-if="numerarRow" class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                     <div class="text-gray-700 dark:text-gray-200">
                                         {{ (rowIndex + 1)+ perPage*(currentPage -1) }}
@@ -354,7 +357,7 @@ const hayValorSearchInputs = computed(() => {
     </div>
     <!-- Aquí mostramos el número total de páginas y la página actual -->
     <div class="flex items-center justify-center mt-4 text-gray-800 dark:text-gray-300">
-        <span class="text-sm">Página {{ currentPage }} de {{ totalPages }} - {{ len_table }} Datos</span>
+        <span class="text-sm">Página {{ currentPage }} de {{ totalPages }} -( {{ len_table }} Datos )</span>
     </div>
 </section>
 </template>
@@ -362,13 +365,13 @@ const hayValorSearchInputs = computed(() => {
 /* Personaliza el contenedor con scroll horizontal */
 .scroll-container {
   /* Establece una altura máxima para el contenedor */
-  max-height: 100%; /* Puedes ajustar esto según tus necesidades */
+  max-height: 100%;
 
   /* Establece un ancho máximo para el contenedor */
-  max-width: 100%; /* O el ancho que desees */
+  max-width: 100%;
 
   /* Hace que el scroll sea visible y personalizado */
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 
 /* Personaliza la scrollbar */

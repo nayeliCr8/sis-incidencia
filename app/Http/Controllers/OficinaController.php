@@ -17,7 +17,9 @@ class OficinaController extends Controller
      */
     public function index()
     {
-        $oficinas = OficinaResource::collection(Oficina::with('sede')->get());
+        // $oficinas = OficinaResource::collection(Oficina::with('sede','equipos')->get());
+        $oficinas = Oficina::with('sede','equipos','perfils')->get();
+        // dd($oficinas[0]);
         $sedes = Sede::all();
         return Inertia::render('admin/oficinas/Index', compact('oficinas','sedes'));
     }

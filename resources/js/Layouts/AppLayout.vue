@@ -55,6 +55,9 @@ const logout = () => {
                                 <NavLink v-if="hasRole('administrador')" :href="route('admin.users.index')" :active="route().current('admin.users.index')">
                                     Admin
                                 </NavLink>
+                                <NavLink :href="route('parauser.index')" :active="route().current('parauser.index')">
+                                    Mis Equipos
+                                </NavLink>
                             </div>
                         </div>
 
@@ -66,7 +69,6 @@ const logout = () => {
                                         <span class="inline-flex rounded-md">
                                             <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700 transition ease-in-out duration-150">
                                                 {{ $page.props.auth.user.current_team.name }}
-
                                                 <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
                                                 </svg>
@@ -137,11 +139,16 @@ const logout = () => {
                                             </button>
                                         </span>
                                     </template>
-
                                     <template #content>
                                         <!-- Account Management -->
-                                        <div class="block px-4 py-2 text-xs text-gray-400">
-                                            Manage Account
+                                        <div class="block px-4 pt-2 text-xs text-gray-300">
+                                            {{ $page.props.auth.user.name }}
+                                        </div>
+                                        <div class="block px-4 text-xs text-gray-300">
+                                            {{ $page.props.auth.user.email }}
+                                        </div>
+                                        <div class="block px-4 pb-2 text-xs text-gray-400">
+                                            Rol: {{ $page.props.auth.user.roles[0] }}
                                         </div>
 
                                         <DropdownLink :href="route('profile.show')">
@@ -150,6 +157,17 @@ const logout = () => {
 
                                         <DropdownLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')">
                                             API Tokens
+                                        </DropdownLink>
+
+                                        <DropdownLink v-if="hasRole('superadmin')" :href="route('admin.prueba')">
+                                            <span class="flex items-center">
+                                                <svg class="-ml-1 h-6 w-6" viewBox="0 0 24 24" fill="none">
+                                                    <path d="M6 8a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V8ZM6 15a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-1Z" class="fill-current text-cyan-400 dark:fill-slate-600"></path>
+                                                    <path d="M13 8a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2V8Z" class="fill-current text-cyan-200 group-hover:text-cyan-300"></path>
+                                                    <path d="M13 15a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-1Z" class="fill-current group-hover:text-sky-300"></path>
+                                                </svg>
+                                                Dashboard Adminstrador
+                                            </span>
                                         </DropdownLink>
 
                                         <div class="border-t border-gray-200 dark:border-gray-600" />

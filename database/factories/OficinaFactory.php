@@ -14,11 +14,12 @@ class OficinaFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    private $v = 0;
     public function definition(): array
     {
         return [
-            'nombre' => 'Oficina '.fake()->colorName(),
-            'sede_id' => fake()->numberBetween(1,10),
+            'nombre' => 'Oficina '.str_pad(++$this->v, 2, '0', STR_PAD_LEFT),
+            'sede_id' => fake()->numberBetween(1,5),
         ];
     }
 }

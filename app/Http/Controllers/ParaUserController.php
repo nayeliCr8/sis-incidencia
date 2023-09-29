@@ -2,28 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Incidencia;
-use App\Models\Perfil;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use PhpParser\Node\Expr\Cast\String_;
 
-class IncidenciaController extends Controller
+class ParaUserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $incidencias = Incidencia::with(
-            'etiqueta',
-            'equipo',
-            'user',
-                'user.perfil'
-        )->get();
-        // dd($incidencias);
-        return Inertia::render('admin/Incidencia/Index',compact('incidencias'));
+        $usuario = User::with(
+            'perfil',
+            'perfil.oficina',
+            'perfil.oficina.equipos',
+            )->where('id','=',auth()->user()->id)->get();
+            
+        return Inertia::render('ParaUsuarios/Index', compact('usuario'));
     }
 
     /**
@@ -45,7 +41,7 @@ class IncidenciaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Incidencia $incidencia)
+    public function show(string $id)
     {
         //
     }
@@ -53,7 +49,7 @@ class IncidenciaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Incidencia $incidencia)
+    public function edit(string $id)
     {
         //
     }
@@ -61,15 +57,15 @@ class IncidenciaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, String $incidencia)
+    public function update(Request $request, string $id)
     {
-        dd($incidencia);
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Incidencia $incidencia)
+    public function destroy(string $id)
     {
         //
     }

@@ -11,7 +11,7 @@ class Perfil extends Model
 
     public function oficina()
     {
-        return $this->belongsTo(Perfil::class);
+        return $this->belongsTo(Oficina::class);
     }
 
     public function user()

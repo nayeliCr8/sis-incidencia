@@ -21,7 +21,7 @@ class PerfilFactory extends Factory
             'apellidos' => fake()->lastName().' '.fake()->lastName(),
             'celular' => fake()->phoneNumber(),
             'cod_planilla' => fake()->numerify(),
-            'oficina_id' => fake()->numberBetween(1,10),
+            'oficina_id' => fake()->numberBetween(1,30),
             'user_id' => fake()->unique()->numberBetween(1,12),
         ];
     }

@@ -22,8 +22,8 @@ class EquipoFactory extends Factory
             'ip' => str_pad(fake()->ipv4(), STR_PAD_LEFT),
             'observacion' => fake()->text(),
             'estado' => fake()->randomElement(array('Pesimo','Regular', 'Bueno','Excelente')),
-            'tipo_equipo' => 'Equipo '.fake()->company(),
-            'oficina_id' => fake()->numberBetween(1,20),
+            'tipo_equipo' => fake()->randomElement(array('Impresora','Scanner', 'PC','Telefono')),
+            'oficina_id' => fake()->numberBetween(1,30),
         ];
     }
 }
