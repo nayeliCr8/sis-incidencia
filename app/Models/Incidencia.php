@@ -28,4 +28,7 @@ class Incidencia extends Model
     {
         return $this->hasMany(Resuelto::class);
     }
+
+    public static $estados = ['Incidencia','Solucionado','Pendiente','Suspendido'];
+    public static $niveles = ['Urgente','No urgente'];
 }

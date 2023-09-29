@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('incidencias', function (Blueprint $table) {
             $table->id();
-            $table->enum('estado', ['Incidencia','Solucionado','Pendiente','Suspendido']);
-            $table->enum('nivel', ['Urgente', 'No urgente']);
+            $table->string('estado', 20);
+            $table->string('nivel', 20);
             $table->longText('descripcion');
             $table->string('evidencia');
             $table->foreignId('equipo_id')->constrained('equipos')->onDelete('cascade');
