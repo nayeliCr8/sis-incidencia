@@ -1,19 +1,27 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-
+import DialogModal from '@/Components/DialogModal.vue';
+import SecondaryButton from '@/Components/SecondaryButton.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
 import CardEquipo from '@/Components/MyComponents/CardEquipo.vue';
 import { ref } from 'vue';
+import { useForm } from '@inertiajs/vue3';
 
 const props = defineProps({
     usuario: Object,
 });
+
+const vermodal = ref(false);
 const datoskeysheaders= ref({
         'marca':'Marca','serie':'Serie','ip':'IP','estado':'Estado'
     }
 );
 
+// const form = useForm();
+
 const func = (id)=>{
     console.log(id);
+    vermodal.value = true;
 }
 // console.log(props.usuario);
 </script>
@@ -43,5 +51,23 @@ const func = (id)=>{
                 </div>
             </div>
         </div>
+        <DialogModal :show="vermodal" @close="vermodal = false" max-width="2xl">
+            <template #title>
+                Reportar Incidencia
+            </template>
+
+            <template #content>
+                <div>
+                    Please copy your new API token. For your security, it won't be shown again.
+                </div>
+            </template>
+
+            <template #footer>
+                <PrimaryButton> Guadar</PrimaryButton>
+                <SecondaryButton @click="vermodal = false">
+                    Close
+                </SecondaryButton>
+            </template>
+        </DialogModal>
     </AppLayout>
 </template>
