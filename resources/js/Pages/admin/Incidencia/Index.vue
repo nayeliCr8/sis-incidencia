@@ -11,7 +11,10 @@ import DialogModal from '@/Components/DialogModal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import { ref } from "vue";
 import DataTable from "@/Components/MyComponents/DataTable2.vue";
-
+import Modal from "@/Components/Modal.vue";
+import TextInput from "@/Components/TextInput.vue";
+import InputLabel from "@/Components/InputLabel.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
 const displayingToken = ref(false);
 const props = defineProps({
     incidencias: Object,
@@ -58,6 +61,20 @@ const eli=(val)=>{
     console.log('tengo q eliminar');
     console.log(val);
 }
+
+const showModel = ref(false);
+
+const FormStore = (val) => {
+  showModel.value = true;
+  const item = props.incidencias.find(incidencia => incidencia.id === val); // para buscar un dato por su id
+    console.log(item);
+};
+
+
+const closeModal = () => {
+  showModel.value = false;
+  form.reset();
+};
 </script>
 <template>
     <Head title="Incidencias"/>
@@ -65,14 +82,28 @@ const eli=(val)=>{
     <AdminLayout>
         <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900 dark:text-gray-100">
-                        PANEL DE INCIDENCIAS
-                    </div>
-                </div>
-                <!-- <div v-for="da,index in incidencias" :key="index">
-                    <div>{{ da }}</div>
-                </div> -->
+                <div class="flex justify-end mr-6">
+                    <!-- <h1>Users Index Page</h1> -->
+                    <SecondaryButton @click="FormStore">Registrar Sede</SecondaryButton>
+                    <Modal :show="showModel" @close="closeModal">
+                      <div class="p-4">
+                        <div class="mb-6">
+                          <InputLabel>Nombre</InputLabel>
+                          <TextInput class="w-full" v-model="form.nombre"></TextInput>
+                          <InputError class="mt-2" :message="form.errors.nombre" />
+                        </div>
+                        <div class="mb-6">
+                          <InputLabel>Dirección</InputLabel>
+                          <TextInput class="w-full" v-model="form.direccion"></TextInput>
+                          <InputError class="mt-2" :message="form.errors.direccion" />
+                        </div>
+                        <div class="mt-6 flex space-x-4 justify-end">
+                          <SecondaryButton @click="closeModal">Cancelar</SecondaryButton>
+                          <PrimaryButton @click="save()">Registrar</PrimaryButton>
+                        </div>
+                      </div>
+                    </Modal>
+                  </div>
             </div>
             <SecondaryButton @click="displayingToken = true">
                 Abrir
@@ -84,7 +115,7 @@ const eli=(val)=>{
                     :tableData="incidencias"
                     :custom-class-colum="customClassColum"
                     :customButtons="customButtons"
-                    @editar="edit"
+                    @editar="FormStore"
                     @eliminar="eli"
                     />
             </div>
