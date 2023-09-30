@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Incidencia;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -18,8 +19,9 @@ class ParaUserController extends Controller
             'perfil.oficina',
             'perfil.oficina.equipos',
             )->where('id','=',auth()->user()->id)->get();
-            
-        return Inertia::render('ParaUsuarios/Index', compact('usuario'));
+        $estad_nive = [Incidencia::$niveles,Incidencia::$estados];
+        // dd(Incidencia::$estados);
+        return Inertia::render('ParaUsuarios/Index', compact('usuario','estad_nive'));
     }
 
     /**

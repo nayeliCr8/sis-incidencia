@@ -17,8 +17,10 @@ const datoskeysheaders= ref({
     }
 );
 
-// const form = useForm();
-
+const form = useForm({
+  name: '',
+  permissions: [],
+});
 const func = (id)=>{
     console.log(id);
     vermodal.value = true;
