@@ -23,7 +23,7 @@ Route::get('prueba', function(){
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('etiqueta', EtiquetaController::class);
-    Route::resource('incidencia',IncidenciaController::class);
+    Route::resource('incidencias',IncidenciaController::class);
     Route::resource('sedes',SedeController::class);
     Route::resource('oficinas',OficinaController::class);
     Route::resource('equipos',EquipoController::class);
