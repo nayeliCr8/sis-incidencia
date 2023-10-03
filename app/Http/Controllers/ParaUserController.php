@@ -53,8 +53,11 @@ class ParaUserController extends Controller
         $etiquetas->evidencia = $image;
         $etiquetas->equipo_id = $request->equipo_id;
         $etiquetas->user_id = auth()->user()->id;
-        $etiquetas->etiqueta_id = $request->etiqueta_id;
-        $etiquetas->etiqueta =  $request->etiqueta;
+        if($request->otros == '1'){
+            $etiquetas->extraetiqueta =  $request->etiqueta_id;
+        }else{
+            $etiquetas->etiqueta_id = $request->etiqueta_id;
+        }
         $etiquetas->save();
     }
 

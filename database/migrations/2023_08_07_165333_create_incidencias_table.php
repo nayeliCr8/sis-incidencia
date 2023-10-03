@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('equipo_id')->constrained('equipos')->onDelete('cascade');
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->foreignId('etiqueta_id')->nullable()->constrained('etiquetas')->onDelete('cascade');
-            $table->string('etiqueta')->nullable();
+            $table->string('extraetiqueta')->nullable();
             $table->timestamps();
         });
     }

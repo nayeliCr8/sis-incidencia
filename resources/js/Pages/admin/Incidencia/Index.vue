@@ -53,7 +53,7 @@ const updatePhotoPreview = () => {
 
 const id = ref();
 const tablekeysheaders= ref({
-        'estado':'Estado','nivel':'Nivel','user.perfil.nombre':'Usuario','etiqueta.nombre':'Etiqueta'
+        'estado':'Estado','nivel':'Nivel','user.perfil.nombre':'Usuario'
     }
 );
 const customClassColum= ref({
@@ -113,7 +113,7 @@ const FormStore = (val) => {
 const showData = (val) => {
     showDataModel.value=true;
     itemdatos.value = props.incidencias.find(incidencia => incidencia.id === val); // para buscar un dato por su id
-    // console.log(itemdatos.value);
+    console.log(itemdatos.value);
 }
 
 const closeDataModal = () => {
@@ -283,7 +283,7 @@ const formattedDate = (dat) => {
                   
                                 <div class="md:col-span-5">
                                   <label for="email">Incidencia</label>
-                                  <div class="p-2 border mt-1 items-center rounded px-4 w-full bg-gray-50">{{ itemdatos.etiqueta.nombre }}</div>
+                                  <div class="p-2 border mt-1 items-center rounded px-4 w-full bg-gray-50">{{ itemdatos.etiqueta? itemdatos.etiqueta.nombre: itemdatos.extraetiqueta }}</div>
                                 </div>
                   
                                 <div class="md:col-span-3">
@@ -377,7 +377,7 @@ const formattedDate = (dat) => {
                                   </div>
                                 </div> -->
                         
-                                <div class="md:col-span-5 text-right">
+                                <div class="md:col-span-5 text-right lg:mt-16">
                                     <SecondaryButton @click="closeDataModal">Cerrar</SecondaryButton>
                                 </div>
                               </div>
