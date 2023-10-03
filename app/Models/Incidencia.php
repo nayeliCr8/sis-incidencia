@@ -9,6 +9,10 @@ class Incidencia extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'updated_at' =>  'datetime',
+        'created_at' =>  'datetime',
+    ];
     public function etiqueta()
     {
         return $this->belongsTo(Etiqueta::class);

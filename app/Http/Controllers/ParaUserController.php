@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateParaUserRequest;
+use App\Models\Etiqueta;
 use App\Models\Incidencia;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class ParaUserController extends Controller
@@ -19,9 +22,9 @@ class ParaUserController extends Controller
             'perfil.oficina',
             'perfil.oficina.equipos',
             )->where('id','=',auth()->user()->id)->get();
-        $estad_nive = [Incidencia::$niveles,Incidencia::$estados];
+        $etiquetas = Etiqueta::all();
         // dd(Incidencia::$estados);
-        return Inertia::render('ParaUsuarios/Index', compact('usuario','estad_nive'));
+        return Inertia::render('ParaUsuarios/Index', compact('usuario','etiquetas'));
     }
 
     /**
@@ -35,9 +38,24 @@ class ParaUserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateParaUserRequest $request)
     {
-        //
+        // dd($request->all());
+        
+        $etiquetas = new Incidencia();
+        $etiquetas->estado = 'Incidencia';
+        $etiquetas->nivel = 'No urgente';
+        $etiquetas->descripcion = $request->descripcion;
+
+        $img = $request->file('evidencia')->store('public/imagen');
+        $image = Storage::url($img);
+
+        $etiquetas->evidencia = $image;
+        $etiquetas->equipo_id = $request->equipo_id;
+        $etiquetas->user_id = auth()->user()->id;
+        $etiquetas->etiqueta_id = $request->etiqueta_id;
+        $etiquetas->etiqueta =  $request->etiqueta;
+        $etiquetas->save();
     }
 
     /**

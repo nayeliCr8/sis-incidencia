@@ -15,15 +15,15 @@ return new class extends Migration
             $table->id();
             $table->string('estado', 20);
             $table->string('nivel', 20);
-            $table->longText('descripcion');
+            $table->longText('descripcion')->nullable();
             $table->string('evidencia');
             $table->foreignId('equipo_id')->constrained('equipos')->onDelete('cascade');
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->foreignId('etiqueta_id')->nullable()->constrained('etiquetas')->onDelete('cascade');
+            $table->string('etiqueta')->nullable();
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */

@@ -28,6 +28,8 @@ const form = useForm({
     evidencia: null,
     descripcion: "",
 });
+const itemdatos = ref(null);
+
 const photoInput = ref(null);
 const photoPreview = ref(null);
 
@@ -48,7 +50,6 @@ const updatePhotoPreview = () => {
 
     reader.readAsDataURL(photo);
 };
-console.log(props.incidencias[0]);
 
 const id = ref();
 const tablekeysheaders= ref({
@@ -111,8 +112,8 @@ const FormStore = (val) => {
 
 const showData = (val) => {
     showDataModel.value=true;
-    const item = props.incidencias.find(incidencia => incidencia.id === val); // para buscar un dato por su id
-    // console.log(val);
+    itemdatos.value = props.incidencias.find(incidencia => incidencia.id === val); // para buscar un dato por su id
+    // console.log(itemdatos.value);
 }
 
 const closeDataModal = () => {
@@ -147,6 +148,18 @@ const test = (e) => {
     form.evidencia = e.target.files[0];
     //.target.files[0]
 }
+
+const formattedDate = (dat) => {
+    const dateObject = new Date(dat);
+    const options = {
+        day: '2-digit',
+        month: '2-digit',
+        year: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+    };
+    return dateObject.toLocaleDateString('es-PE', options);
+};
 </script>
 <template>
     <Head title="Incidencias"/>
@@ -236,19 +249,18 @@ const test = (e) => {
                 <div class="p-4 bg-gray-100 flex items-center justify-center">
                     <div class="container max-w-screen-lg mx-auto">
                       <div>
-                        <h2 class="font-semibold text-xl text-gray-600">Detalles de la Incidencia {{item}}</h2>
-                        <p class="text-gray-500 mb-6">Form is mobile responsive. Give it a try.</p>
+                        <h2 class="font-semibold text-xl text-gray-600">Detalles de la Incidencia</h2>
                   
                         <div class="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
                           <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
                             <div class="text-gray-600">
-                              <p class="font-medium text-lg">Personal Details</p>
-                              <p>Please fill out all the fields.</p>
+                              <p class="font-medium text-lg">Evidencia</p>
+                              <!-- <p>Please fill out all the fields.</p> -->
 
                               <div> 
                                 <figure class="h-auto max-w-lg transition-all duration-300 rounded-lg cursor-pointer filter grayscale hover:grayscale-0">
                                     <!-- <a href="#"> -->
-                                      <img class="rounded-lg" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/content/content-gallery-3.png" alt="image description">
+                                      <img class="rounded-lg" :src="itemdatos.evidencia" alt="image description">
                                     <!-- </a> -->
                                     <!-- <figcaption class="absolute px-4 text-lg text-white bottom-6">
                                         <p>Do you want to get notified when a new component is added to Flowbite?</p>
@@ -256,35 +268,55 @@ const test = (e) => {
                                   </figure>
                               </div>
                               <div class="text-justify">
-                                <p>Do you want to get notified when a new component is added to Flowbite?</p>
-                              <p>Do you want to get notified when a new component is added to Flowbite?</p>
-                              <p>Do you want to get notified when a new component is added to Flowbite?</p>
+                                Descripción: 
+                                <p>{{itemdatos.descripcion}}</p>
                               </div>
                             </div>
                   
                             <div class="lg:col-span-2">
                               <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
                                 <div class="md:col-span-5">
-                                  <label for="full_name">Full Name</label>
-                                  <input type="text" name="full_name" id="full_name" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" />
+                                  <label for="full_name">Nombre se usuario </label>
+                                  <div class="p-2 border mt-1 items-center rounded px-4 w-full bg-gray-50">{{ itemdatos.user.name }} {{ itemdatos.user.perfil.apellidos }}</div>
+                                  <!-- <input type="text" name="full_name" id="full_name"  value="" /> -->
                                 </div>
                   
                                 <div class="md:col-span-5">
-                                  <label for="email">Email Address</label>
-                                  <input type="text" name="email" id="email" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="email@domain.com" />
+                                  <label for="email">Incidencia</label>
+                                  <div class="p-2 border mt-1 items-center rounded px-4 w-full bg-gray-50">{{ itemdatos.etiqueta.nombre }}</div>
                                 </div>
                   
                                 <div class="md:col-span-3">
-                                  <label for="address">Address / Street</label>
-                                  <input type="text" name="address" id="address" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="" />
+                                  <label for="address">Nivel</label>
+                                  <div class="p-2 border mt-1 items-center rounded px-4 w-full bg-gray-50">{{ itemdatos.nivel }}</div>
                                 </div>
                   
                                 <div class="md:col-span-2">
-                                  <label for="city">City</label>
-                                  <input type="text" name="city" id="city" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="" />
+                                  <label for="city">Fecha</label>
+                                  <div class="p-2 border mt-1 items-center rounded px-4 w-full bg-gray-50">{{ formattedDate(itemdatos.created_at) }}</div>
+                                </div>
+
+                                <div class="md:col-span-3">
+                                  <label for="address">Equipo</label>
+                                  <div class="p-2 border mt-1 items-center rounded px-4 w-full bg-gray-50">{{ itemdatos.equipo.marca }}</div>
                                 </div>
                   
                                 <div class="md:col-span-2">
+                                  <label for="city">IP:</label>
+                                  <div class="p-2 border mt-1 items-center rounded px-4 w-full bg-gray-50">{{ itemdatos.equipo.ip }}</div>
+                                </div>
+
+                                <div class="md:col-span-3">
+                                  <label for="address">Oficina</label>
+                                  <div class="p-2 border mt-1 items-center rounded px-4 w-full bg-gray-50">{{ itemdatos.equipo.oficina.nombre }}</div>
+                                </div>
+                  
+                                <div class="md:col-span-2">
+                                  <label for="city">Sede:</label>
+                                  <div class="p-2 border mt-1 items-center rounded px-4 w-full bg-gray-50">{{ itemdatos.equipo.oficina.sede.nombre }}</div>
+                                </div>
+                  
+                                <!-- <div class="md:col-span-2">
                                   <label for="country">Country / region</label>
                                   <div class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
                                     <input name="country" id="country" placeholder="Country" class="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent" value="" />
@@ -343,7 +375,7 @@ const test = (e) => {
                                       </svg>
                                     </button>
                                   </div>
-                                </div>
+                                </div> -->
                         
                                 <div class="md:col-span-5 text-right">
                                     <SecondaryButton @click="closeDataModal">Cerrar</SecondaryButton>

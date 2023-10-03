@@ -22,9 +22,11 @@ class IncidenciaController extends Controller
         $incidencias = Incidencia::with(
             'etiqueta',
             'equipo',
+                'equipo.oficina',
+                    'equipo.oficina.sede',
             'user',
                 'user.perfil'
-        )->get();
+        )->orderBy('id','desc')->get();
 
         $estados = Incidencia::$estados;
         // dd($incidencias);

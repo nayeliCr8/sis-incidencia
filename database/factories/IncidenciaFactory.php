@@ -20,7 +20,7 @@ class IncidenciaFactory extends Factory
             'estado' => fake()->randomElement(array('Incidencia','Solucionado','Pendiente','Suspendido')),
             'nivel' => fake()->randomElement(array('Urgente','No urgente')),
             'descripcion' => fake()->text(),
-            'evidencia' => fake()->url(),
+            'evidencia' => fake()->imageUrl(),
             'equipo_id' => fake()->numberBetween(1,20),
             'user_id' => fake()->numberBetween(3,12),
             'etiqueta_id' => fake()->numberBetween(1,5),
