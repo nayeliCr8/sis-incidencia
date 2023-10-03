@@ -8,11 +8,14 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import SederbarLink from '@/Components/SederbarLink.vue';
+import { usePermission } from "@/composables/permissions";
+
 defineProps({
     title: String,
 });
 
 const showingNavigationDropdown = ref(false);
+const { hasPermission } = usePermission();
 
 const switchToTeam = (team) => {
     router.put(route('current-team.update'), {
@@ -75,7 +78,7 @@ const logout = () => {
                 </li>
                  <li>
                     <div>
-                        <SederbarLink :href="route('admin.users.index')" :active="route().current('admin.users.*')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
+                        <SederbarLink v-if="hasPermission('user index')" :href="route('admin.users.index')" :active="route().current('admin.users.*')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
                             <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"

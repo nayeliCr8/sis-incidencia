@@ -16,11 +16,16 @@ import TextInput from "@/Components/TextInput.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import InputError from "@/Components/InputError.vue";
+import { usePermission } from "@/composables/permissions";
+
+
 const displayingToken = ref(false);
 const props = defineProps({
     incidencias: Object,
     estados: Object,
 });
+
+const { hasPermission } = usePermission();
 
 const form = useForm({
     _method: 'PUT',
@@ -101,13 +106,18 @@ const closeModal = () => {
 
 
 const FormStore = (val) => {
-  showModel.value = true;
+  if(hasPermission('incidencia resolver')){
+    showModel.value = true;
     const item = props.incidencias.find(incidencias => incidencias.id === val); // para buscar un dato por su id
     id.value = item.id;
     form.estado = item.estado;
     form.evidencia = "",
     form.descripcion = "",
     console.log(item.id);
+  }else{
+    alert("No tiene autorización para resolver incidencia");
+  }
+
 };
 
 const showData = (val) => {
@@ -165,7 +175,7 @@ const formattedDate = (dat) => {
     <Head title="Incidencias"/>
     
     <AdminLayout>
-        <div class="py-4">
+        <div class="py-4" v-if="hasPermission('incidencia index')">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="flex justify-end mr-6">
                     <!-- <h1>Users Index Page</h1> -->

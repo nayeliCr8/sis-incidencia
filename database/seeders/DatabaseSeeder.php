@@ -15,9 +15,9 @@ class DatabaseSeeder extends Seeder
         $this->call([RolesSeeder::class, AdminSeeder::class]);
         \App\Models\User::factory()->create([
             'name' => 'Joel_admin',
-            'email' => 'test@gmail.com',
-            'password' => bcrypt('test@gmail.com')
-        ])->assignRole('tecnico');
+            'email' => 'administrador@gmail.com',
+            'password' => bcrypt('administrador@gmail.com')
+        ])->assignRole('administrador');
         \App\Models\User::factory()->create([
             'name' => 'Joel_practicante',
             'email' => 'practicante@gmail.com',
