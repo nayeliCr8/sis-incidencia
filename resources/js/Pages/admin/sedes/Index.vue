@@ -12,18 +12,45 @@ import Modal from "@/Components/Modal.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import InputError from "@/Components/InputError.vue";
+import DataTable from "@/Components/MyComponents/DataTable2.vue";
 import { usePermission } from "@/composables/permissions";
 const props = defineProps({
   sedes: Object,
 });
 
-const id = ref();
+const data = ref();
+const llave = ref();
 const option = ref(1)
 // const nombre = ref();
 // const direccion = ref();
 const { hasPermission } = usePermission();
 
+
+
+const tablekeysheaders= ref({
+     'nombre':'Nombre del Permiso','direccion':'Dirección'
+    }
+);
+
+const customButtons= ref([{
+        label: "Editar",
+        action: 'editar',
+        permisos: hasPermission('sede update'),
+        buttonClasses: "inline-flex items-center justify-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-500 active:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150",
+    },
+    {
+        label: "Eliminar",
+        action: 'eliminar',
+        permisos: hasPermission('sede delete'),
+        buttonClasses: "inline-flex items-center justify-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150",
+    },
+    // Puedes agregar más botones personalizados con clases de estilo personalizadas
+]);
+
+const tableFiltros= ref([]);
+
 const form = useForm({
+  id: '',
   nombre: '',
   direccion: '',
   errors: '',
@@ -39,12 +66,13 @@ const closeModal = () => {
   showModel.value = false;
   form.reset();
 };
-const FormUpdate = (opt,op) => {
+const FormUpdate = (id) => {
     showModel.value = true;
-    option.value = opt;
-    id.value = op.id;
-    form.nombre = op.nombre;
-    form.direccion = op.direccion;
+    data.value = props.sedes.find(sede => sede.id === id); // para buscar un dato por su id
+    form.nombre = data.value.nombre;
+    form.direccion = data.value.direccion;
+    option.value = 0;
+    llave.value = data.value.id;
 }
 
 const save = () => {
@@ -52,8 +80,8 @@ const save = () => {
         form.post(route("admin.sedes.store"), {
             onSuccess: () => closeModal(),
         });
-    }else{
-        form.put(route("admin.sedes.update", id.value), {
+    }else {
+        form.put(route("admin.sedes.update", llave.value), {
             onSuccess: () => closeModal(),
         });
     }
@@ -62,21 +90,19 @@ const save = () => {
    
 // }
 
-// const deleteUser = (id) => {
-//    form.delete(route('admin.users.destroy', id), {
-//     onSuccess: () => closeModal()
-//    });
-// }
-// const formStore = () => {
-  
-// };
+const deleteSede = (id) => {
+   form.delete(route('admin.sedes.destroy', id), {
+    onSuccess: () => closeModal()
+   });
+}
+
 </script>
 <template>
   <Head title="Dashboard" />
 
   <AdminLayout>
     <div class="max-w-7xl mx-auto py-4">
-      <div class="flex justify-end mr-6" v-if="hasPermission('sede create')">
+      <div class="flex justify-end" v-if="hasPermission('sede create')">
         <!-- <h1>Users Index Page</h1> -->
         <SecondaryButton @click="FormStore">Registrar Sede</SecondaryButton>
         <Modal :show="showModel" @close="closeModal">
@@ -100,7 +126,16 @@ const save = () => {
         </Modal>
       </div>
       <div class="mt-6">
-        <Table>
+        <DataTable
+        :numerarRow="true"
+        :table-keys-headers="tablekeysheaders" 
+        :tableData="sedes"
+        :customButtons="customButtons"
+        :tableFiltros="tableFiltros"
+        @editar="FormUpdate"
+        @eliminar="deleteSede"
+        />
+        <!-- <Table>
           <template #header>
             <TableRow>
               <TableHeaderCell>Nombre</TableHeaderCell>
@@ -131,7 +166,7 @@ const save = () => {
               </TableDataCell>
             </TableRow>
           </template>
-        </Table>
+        </Table> -->
       </div>
     </div>
   </AdminLayout>

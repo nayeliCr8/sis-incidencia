@@ -13,6 +13,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import InputError from "@/Components/InputError.vue";
 import { usePermission } from "@/composables/permissions";
+import DataTable from "@/Components/MyComponents/DataTable2.vue";
 const props = defineProps({
   oficinas: Object,
   sedes: Object,
@@ -20,12 +21,32 @@ const props = defineProps({
 
 const {hasPermission} = usePermission();
 
-console.log(props.oficinas);
 
-const id = ref();
+const tablekeysheaders= ref({
+     'nombre':'Nombre de la Oficina','sede.nombre':'Nombre de la Sede'
+    }
+);
+
+const customButtons= ref([{
+        label: "Editar",
+        action: 'editar',
+        permisos: hasPermission('oficina update'),
+        buttonClasses: "inline-flex items-center justify-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-500 active:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150",
+    },
+    {
+        label: "Eliminar",
+        action: 'eliminar',
+        permisos: hasPermission('oficina delete'),
+        buttonClasses: "inline-flex items-center justify-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150",
+    },
+    // Puedes agregar más botones personalizados con clases de estilo personalizadas
+]);
+
+const tableFiltros= ref([]);
+
+const llave = ref();
 const option = ref(1)
-// const nombre = ref();
-// const sede = ref();
+const data = ref();
 
 const form = useForm({
   nombre: '',
@@ -43,12 +64,13 @@ const closeModal = () => {
   showModel.value = false;
   form.reset();
 };
-const FormUpdate = (opt,op) => {
+const FormUpdate = (id) => {
     showModel.value = true;
-    option.value = opt;
-    id.value = op.id;
-    form.nombre = op.nombre;
-    form.sede = op.sede.id;
+    data.value = props.oficinas.find(oficina => oficina.id === id); // para buscar un dato por su id
+    form.nombre = data.value.nombre;
+    form.sede = data.value.sede.id;
+    option.value = 0;
+    llave.value = data.value.id;
 }
 
 const save = () => {
@@ -57,21 +79,17 @@ const save = () => {
             onSuccess: () => closeModal(),
         });
     }else{
-        form.put(route("admin.oficinas.update", id.value), {
+        form.put(route("admin.oficinas.update", llave.value), {
             onSuccess: () => closeModal(),
         });
     }
 }
-// const formUpdate = () => {
-   
-// }
 
-// const deleteUser = (id) => {
-//    form.delete(route('admin.users.destroy', id), {
-//     onSuccess: () => closeModal()
-//    });
-// }
-// const formStore = () => {
+const deleteOficina = (id) => {
+   form.delete(route('admin.oficinas.destroy', id), {
+    onSuccess: () => closeModal()
+   });
+}
   
 // };
 </script>
@@ -80,7 +98,7 @@ const save = () => {
 
   <AdminLayout>
     <div class="max-w-7xl mx-auto py-4">
-      <div class="flex justify-end mr-6" v-if="hasPermission('oficina create')">
+      <div class="flex justify-end" v-if="hasPermission('oficina create')">
         <!-- <h1>Users Index Page</h1> -->
         <SecondaryButton @click="FormStore">Registrar Oficina</SecondaryButton>
         <Modal :show="showModel" @close="closeModal">
@@ -112,13 +130,21 @@ const save = () => {
             <div class="mt-6 flex space-x-4 justify-end">
               <SecondaryButton @click="closeModal">Cancelar</SecondaryButton>
               <PrimaryButton @click="save()">Registrar</PrimaryButton>
-              <!-- <PrimaryButton @click="formUpdate()">Actualizar</PrimaryButton> -->
             </div>
           </div>
         </Modal>
       </div>
       <div class="mt-6">
-        <Table>
+        <DataTable
+        :numerarRow="true"
+        :table-keys-headers="tablekeysheaders" 
+        :tableData="oficinas"
+        :customButtons="customButtons"
+        :tableFiltros="tableFiltros"
+        @editar="FormUpdate"
+        @eliminar="deleteOficina"
+        />
+        <!-- <Table>
           <template #header>
             <TableRow>
               <TableHeaderCell>Id</TableHeaderCell>
@@ -163,7 +189,7 @@ const save = () => {
               </TableDataCell>
             </TableRow>
           </template>
-        </Table>
+        </Table> -->
       </div>
     </div>
   </AdminLayout>

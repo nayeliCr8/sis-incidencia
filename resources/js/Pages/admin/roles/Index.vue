@@ -56,7 +56,7 @@ const deleteRole = (id) => {
 };
 
 const editar = (id) => {
-  console.log("hola");
+  form.get(route("admin.roles.edit", id));
 }
 </script>
 
