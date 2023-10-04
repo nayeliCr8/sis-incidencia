@@ -66,7 +66,7 @@ const logout = () => {
                  </li> -->
                  <li>
                     <div>
-                        <SederbarLink :href="route('admin.incidencias.index')" :active="route().current('admin.incidencias.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
+                        <SederbarLink v-if="hasPermission('incidencia index')" :href="route('admin.incidencias.index')" :active="route().current('admin.incidencias.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
                             <!-- Nuevo ícono SVG para Incidencias -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4" viewBox="0 0 640 512">
                             <path class="fill-current text-gray-400 group-hover:text-cyan-300" d="M384 96V320H64L64 96H384zM64 32C28.7 32 0 60.7 0 96V320c0 35.3 28.7 64 64 64H181.3l-10.7 32H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H352c17.7 0 32-14.3 32-32s-14.3-32-32-32H277.3l-10.7-32H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64z"/> 
@@ -99,7 +99,7 @@ const logout = () => {
                 </li>
                  <li>
                     <div>
-                        <SederbarLink :href="route('admin.roles.index')" :active="route().current('admin.roles.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
+                        <SederbarLink v-if="hasPermission('rol index')" :href="route('admin.roles.index')" :active="route().current('admin.roles.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
                             <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -120,7 +120,7 @@ const logout = () => {
                 </li>
                 <li>
                     <div>
-                        <SederbarLink :href="route('admin.permissions.index')" :active="route().current('admin.permissions.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
+                        <SederbarLink v-if="hasPermission('permiso index')" :href="route('admin.permissions.index')" :active="route().current('admin.permissions.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
                             <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
@@ -141,7 +141,7 @@ const logout = () => {
                 </li>
                 <li>
                     <div>
-                        <SederbarLink :href="route('admin.sedes.index')" :active="route().current('admin.sedes.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
+                        <SederbarLink v-if="hasPermission('sede index')" :href="route('admin.sedes.index')" :active="route().current('admin.sedes.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                 <path class="fill-current text-gray-300 group-hover:text-cyan-300" fill-rule="evenodd" d="M2 6a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1H8a3 3 0 00-3 3v1.5a1.5 1.5 0 01-3 0V6z" clip-rule="evenodd" />
                                 <path class="fill-current text-gray-600 group-hover:text-cyan-800" d="M6 12a2 2 0 012-2h8a2 2 0 012 2v2a2 2 0 01-2 2H2h2a2 2 0 002-2v-2z" />
@@ -152,7 +152,7 @@ const logout = () => {
                 </li>
                 <li>
                    <div>
-                    <SederbarLink :href="route('admin.oficinas.index')" :active="route().current('admin.oficinas.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
+                    <SederbarLink v-if="hasPermission('oficina index')" :href="route('admin.oficinas.index')" :active="route().current('admin.oficinas.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path class="fill-current text-gray-300 group-hover:text-cyan-300" fill-rule="evenodd" d="M2 6a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1H8a3 3 0 00-3 3v1.5a1.5 1.5 0 01-3 0V6z" clip-rule="evenodd" />
                             <path class="fill-current text-gray-600 group-hover:text-cyan-800" d="M6 12a2 2 0 012-2h8a2 2 0 012 2v2a2 2 0 01-2 2H2h2a2 2 0 002-2v-2z" />
@@ -163,7 +163,7 @@ const logout = () => {
                 </li>
                 <li>
                    <div>
-                    <SederbarLink :href="route('admin.equipos.index')" :active="route().current('admin.equipos.*')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
+                    <SederbarLink v-if="hasPermission('equipo index')" :href="route('admin.equipos.index')" :active="route().current('admin.equipos.*')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path class="fill-current text-gray-300 group-hover:text-cyan-300" fill-rule="evenodd" d="M2 6a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1H8a3 3 0 00-3 3v1.5a1.5 1.5 0 01-3 0V6z" clip-rule="evenodd" />
                             <path class="fill-current text-gray-600 group-hover:text-cyan-800" d="M6 12a2 2 0 012-2h8a2 2 0 012 2v2a2 2 0 01-2 2H2h2a2 2 0 002-2v-2z" />
