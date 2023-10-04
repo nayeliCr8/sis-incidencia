@@ -13,9 +13,16 @@ use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('can:rol index')->only('index');
+        $this->middleware('can:rol create')->only('create','store');
+        $this->middleware('can:rol update')->only('edit','update');
+        $this->middleware('can:rol delete')->only('destroy');
+    }
+
     public function index(): Response
     {
         return Inertia::render('admin/roles/Index', [

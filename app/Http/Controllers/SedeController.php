@@ -11,9 +11,16 @@ use Inertia\Inertia;
 
 class SedeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('can:sede index')->only('index');
+        $this->middleware('can:sede create')->only('create','store');
+        $this->middleware('can:sede update')->only('edit','update');
+        $this->middleware('can:sede delete')->only('destroy');
+    }
+
     public function index()
     {
         $sedes = SedeResource::collection(Sede::all());

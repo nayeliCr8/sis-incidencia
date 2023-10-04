@@ -12,9 +12,15 @@ use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('can:permiso index')->only('index');
+        $this->middleware('can:permiso create')->only('create','store');
+        $this->middleware('can:permiso update')->only('edit','update');
+        $this->middleware('can:permiso delete')->only('destroy');
+    }
+    
     public function index(): Response
     {
         return Inertia::render('admin/permisos/Index', [
