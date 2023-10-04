@@ -10,8 +10,46 @@ import TableDataCell from "@/Components/TableDataCell.vue";
 import Modal from "@/Components/Modal.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
+import DataTable from "@/Components/MyComponents/DataTable2.vue";
 
 defineProps(["roles"]);
+
+const tablekeysheaders= ref({
+      'id':'ID','estado':'Estado','nivel':'Nivel','user.perfil.nombre':'Usuario','etiqueta.nombre|extraetiqueta':'Incidencia',
+    }
+);
+
+
+const customClassColum= ref({
+        'estado': {
+            'Incidencia': "rounded-full bg-yellow-100 px-2 py-1 font-semibold text-yellow-600 border-2 border-yellow-600 dark:bg-gray-700 dark:text-yellow-400",
+            'Suspendido': "rounded-full bg-red-100 px-2 py-1 font-semibold text-red-600 border-2 border-red-600 dark:bg-gray-700 dark:text-red-400",
+            'Pendiente': "rounded-full bg-blue-100 px-2 py-1 font-semibold text-blue-600 border-2 border-blue-600 dark:bg-gray-700 dark:text-blue-400",
+            'Solucionado': "rounded-full bg-green-100 px-2 py-1 font-semibold text-green-600 border-2 border-green-600 dark:bg-gray-700 dark:text-green-400",
+        },
+        'nivel': {
+            'No urgente': "rounded-full bg-yellow-100 px-2 py-1 font-semibold text-yellow-600 border-2 border-yellow-600 dark:bg-yellow-900 dark:text-yellow-200",
+            'Urgente':"rounded-full bg-red-100 px-2 py-1 font-semibold text-red-600 border-2 border-red-600 dark:bg-red-900 dark:text-red-200"
+        },
+    }
+);
+
+const customButtons= ref([{
+        label: "Resolver",
+        action: 'editar',
+        novercondición:{'estado':'Solucionado'},
+        permisos: hasPermission('incidencia resolver'),
+        buttonClasses: "px-2 py-1 text-sm rounded-md bg-green-500 text-white hover:bg-green-600",
+    },
+    {
+        label: "Ver información",
+        action: 'eliminar',
+        permisos: true,
+        buttonClasses: "px-2 py-1 border-2 text-sm bg-gray-200 rounded-md hover:bg-gray-300 dark:text-white dark:hover:bg-gray-600",
+    },
+    // Puedes agregar más botones personalizados con clases de estilo personalizadas
+]);
+
 const form = useForm({});
 const { hasPermission } = usePermission();
 
@@ -46,7 +84,18 @@ const deleteRole = (id) => {
         >
       </div>
       <div class="mt-6">
-        <Table>
+        <DataTable
+        :numerarRow="true"
+        :table-keys-headers="tablekeysheaders" 
+        :tableData="roles"
+        :custom-class-colum="customClassColum"
+        :customButtons="customButtons"
+        :tableFiltros="tableFiltros"
+        @editar="FormStore"
+        @eliminar="showData"
+        />
+
+        <!-- <Table>
           <template #header>
             <TableRow>
               <TableHeaderCell>ID</TableHeaderCell>
@@ -90,7 +139,7 @@ const deleteRole = (id) => {
               </TableDataCell>
             </TableRow>
           </template>
-        </Table>
+        </Table> -->
       </div>
     </div>
   </AdminLayout>
