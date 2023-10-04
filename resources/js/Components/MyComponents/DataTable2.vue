@@ -317,21 +317,22 @@ const hayValorSearchInputs = computed(() => {
                                 <td v-if="customButtons" class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                     <!-- Bucle para los botones personalizados -->
                                     <template v-for="(button, buttonIndex) in customButtons" :key="buttonIndex">
-                                        <template v-if="button.novercondición ">
-                                            <template v-for="(condiciones, conIndex) in button.novercondición" :key="conIndex">
-                                                <button v-if="!condiciones.includes(row[conIndex])" @click="handleCustomButtonClick(button.action, row['__id__'])" class="mx-1"
-                                                    :class="button.buttonClasses || 'text-sm rounded-md bg-blue-500 text-white hover:bg-blue-600'">
-                                                    {{ button.label }}
-                                                </button>
+                                        <template v-if="button.permisos">
+                                            <template v-if="button.novercondición ">
+                                                <template v-for="(condiciones, conIndex) in button.novercondición" :key="conIndex">
+                                                    <button v-if="!condiciones.includes(row[conIndex])" @click="handleCustomButtonClick(button.action, row['__id__'])" class="mx-1"
+                                                        :class="button.buttonClasses || 'text-sm rounded-md bg-blue-500 text-white hover:bg-blue-600'">
+                                                        {{ button.label }}
+                                                    </button>
+                                                </template>
                                             </template>
+                                            <button v-else @click="handleCustomButtonClick(button.action, row['__id__'])" class="mx-1"
+                                                :class="button.buttonClasses || 'text-sm rounded-md px-2 py-1 bg-blue-500 text-white hover:bg-blue-600'"
+                                            >
+                                                {{ button.label }}
+                                            </button>
                                         </template>
-                                        <button v-else @click="handleCustomButtonClick(button.action, row['__id__'])" class="mx-1"
-                                            :class="button.buttonClasses || 'text-sm rounded-md px-2 py-1 bg-blue-500 text-white hover:bg-blue-600'"
-                                        >
-                                            {{ button.label }}
-                                        </button>
                                     </template>
-                                    
                                 </td>
                             </tr>
                         </tbody>

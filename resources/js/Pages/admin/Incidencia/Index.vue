@@ -76,15 +76,18 @@ const customClassColum= ref({
         },
     }
 );
+
 const customButtons= ref([{
         label: "Resolver",
         action: 'editar',
         novercondición:{'estado':'Solucionado'},
+        permisos: hasPermission('incidencia resolver'),
         buttonClasses: "px-2 py-1 text-sm rounded-md bg-green-500 text-white hover:bg-green-600",
     },
     {
         label: "Ver información",
         action: 'eliminar',
+        permisos: true,
         buttonClasses: "px-2 py-1 border-2 text-sm rounded-md text-white hover:bg-gray-600",
     },
     // Puedes agregar más botones personalizados con clases de estilo personalizadas
@@ -124,7 +127,7 @@ const closeModal = () => {
 
 
 const FormStore = (val) => {
-  if(hasPermission('incidencia resolver')){
+  
     showModel.value = true;
     const item = props.incidencias.find(incidencias => incidencias.id === val); // para buscar un dato por su id
     id.value = item.id;
@@ -132,10 +135,6 @@ const FormStore = (val) => {
     form.evidencia = "",
     form.descripcion = "",
     console.log(item.id);
-  }else{
-    alert("No tiene autorización para resolver incidencia");
-  }
-
 };
 
 const showData = (val) => {
