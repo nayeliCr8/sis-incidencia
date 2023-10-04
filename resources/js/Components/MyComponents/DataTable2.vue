@@ -12,9 +12,13 @@ const props = defineProps({
         type: Object,
         required: true,
     },
-    perPage: { // contiene la cantida de elemtos por pagina
+    tableLenElemPag: { // contiene la cantida de elemtos por pagina
         type: Number,
         default: 10,
+    },
+    tableFiltros: { // contiene los elementos de los filtros
+        type: Object,
+        default: null,
     },
     customClassColum: { // contiene a los botones
         type: Object,
@@ -28,7 +32,7 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
-    acctions:{ // contiene un arra de acciones para los botones
+    acctions:{ // contiene un array de acciones para los botones
         type: Array,
     }
 });
@@ -37,43 +41,49 @@ const handleCustomButtonClick = (action, idcolun) => {
   // Emitir la acción
   emit(action, idcolun);
 };
-// Metodo para comvertir la Data en un array plano
+const extractValue = (item, keys) => {
+    let value = item;
+    for (const key of keys) {
+        if (value && key in value) {
+            value = value[key];
+        } else {
+            return null;
+        }
+    }
+    return value;
+};
+
 const convertDataToSimpleArray = (data, columnConfig) => {
-  const simpleArray = [];
-  data.forEach((item) => {
-    const row = {};
-    row['__id__']=item['id'];
-    for (const configKey in columnConfig) {
-        let value = null;
-        if (configKey.includes('.')) {
-            const keys = configKey.split('.'); // Dividir la clave por puntos
-            value = item;
-            // Recorrer las claves para acceder a las propiedades anidadas
-            for (const key of keys) {
-                if (value.hasOwnProperty(key)) {
-                    value = value[key];
+    return data.map((item) => {
+        const row = { '__id__': item.id };
+        for (const configKey in columnConfig) {
+            let value = null;
+            const orKeys = configKey.includes('|') ? configKey.split('|') : [configKey];
+            for (const orKey of orKeys) {
+                if (orKey.includes('.')) {
+                    const keys = orKey.split('.');
+                    value = extractValue(item, keys);
                 } else {
-                    value = null; // Si no existe la propiedad, asignar null
+                    value = item[orKey];
+                }
+                if (value) {
                     break;
                 }
             }
-        }else{
-            value = item[configKey];
+            row[configKey] = value;
         }
-        // Agregar al objeto de fila
-        row[configKey] = value;
-    }
-    simpleArray.push(row);
-  });
-  return simpleArray;
+        return row;
+    });
 };
-const _tableData = convertDataToSimpleArray(props.tableData,props.tableKeysHeaders); //aqui cramos la Data plana
+const _tableData = computed(() => {
+  return convertDataToSimpleArray(props.tableData, props.tableKeysHeaders);
+}); //aqui creamos la Data plana
 let len_table = ref(props.tableData.length);  // tamaño de la data
 const searchQuery = ref(''); // referencia para busqueda
 const currentPage = ref(1);  // Definir una referencia reactiva para la página actual
 // Calcular el índice de inicio y final de los elementos a mostrar en la página actual
-const startIndex = computed(() => (currentPage.value - 1) * props.perPage);
-let endIndex = computed(() => Math.min(startIndex.value + props.perPage, len_table.value));
+const startIndex = computed(() => (currentPage.value - 1) * props.tableLenElemPag);
+let endIndex = computed(() => Math.min(startIndex.value + props.tableLenElemPag, len_table.value));
 
 let columnSearchInputs = ref({}); // referencia para almacenar los términos de búsqueda de cada columna
 let openSearchColumns = ref({}); // referencia para rastrear qué columnas tienen el cuadro de búsqueda abierto
@@ -83,6 +93,10 @@ for (const configKey in props.tableKeysHeaders) {
     columnSearchInputs.value[configKey] = '';
     openSearchColumns.value[configKey] = false;
 }
+props.tableFiltros.push({
+    label: "Todos",
+    val: "full",
+})
 // Dato para la llave del dato y direccion para ordenar
 const sortConfig = ref({
     key: '',        // La clave de la columna por la que se está ordenando
@@ -106,9 +120,8 @@ const sortByColumn = (key) => {
 };
 // Calcular los datos paginados en función de la página actual y ordenamiento
 const paginatedData = computed(() => {
-    const dataCopy = [..._tableData];
     if (sortConfig.value.key && sortConfig.value.direction) {
-        dataCopy.sort((a, b) => { // realizar el ordenamiento con sort
+        _tableData.value.sort((a, b) => { // realizar el ordenamiento con sort
             const keyA = a[sortConfig.value.key];
             const keyB = b[sortConfig.value.key];
             // Usar isNumeric para determinar si los datos son numéricos
@@ -123,7 +136,7 @@ const paginatedData = computed(() => {
         });
     }
     // Filtrar los datos en función de la búsqueda global y la búsqueda en columnas
-    const filteredData = dataCopy.filter(item => {
+    const filteredData = _tableData.value.filter(item => {
         const columnKey = Object.keys(columnSearchInputs.value).find(key => { // buscar en que columna tiene un valor para la busqueda
             return columnSearchInputs.value[key].toLowerCase() !== '';
         });
@@ -155,7 +168,7 @@ const goToNextPage = () => {
 };
 // Calcular el número total de páginas
 let totalPages = computed(() => {
-    return Math.ceil(len_table.value / props.perPage);  //ceil redondea el valor
+    return Math.ceil(len_table.value / props.tableLenElemPag);  //ceil redondea el valor
 });
  
 const abrirBusColum = (key) => {
@@ -181,7 +194,7 @@ const hayValorSearchInputs = computed(() => {
 <template>
   <section class="container mx-auto">
     <!-- Botones -->
-    <div class="sm:flex sm:items-center sm:justify-between">
+    <!-- <div class="sm:flex sm:items-center sm:justify-between">
         <div class="flex items-center mt-4 gap-x-3">
             <button class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto dark:hover:bg-gray-800 dark:bg-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:border-gray-700">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -203,25 +216,24 @@ const hayValorSearchInputs = computed(() => {
                 <span>Add vendor</span>
             </button>
         </div>
-    </div>
+    </div> -->
     <div class="mt-6 md:flex md:items-center md:justify-between">
-        <div class="inline-flex overflow-hidden bg-white border divide-x rounded-lg dark:bg-gray-900 rtl:flex-row-reverse dark:border-gray-700 dark:divide-gray-700">
-            <button class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 bg-gray-100 sm:text-sm dark:bg-gray-800 dark:text-gray-300">
-                View all
+        <div class="inline-flex scroll-container bg-white border divide-x rounded-lg dark:bg-gray-700 rtl:flex-row-reverse dark:border-gray-700 dark:divide-gray-700">
+            <!-- <button class="px-5 py-2 text-xs font-extrabold text-gray-600 transition-colors duration-200 bg-gray-100 sm:text-sm dark:bg-gray-900 dark:text-white">
+                Todos
+            </button> -->
+            <button v-for="fil,filIndex in tableFiltros" :key="filIndex" 
+                :class="fil.active?'font-extrabold bg-gray-100 dark:bg-gray-900 dark:text-white':'font-medium dark:text-gray-300 dark:hover:bg-gray-800 hover:bg-gray-100'"
+                class="px-5 py-2 text-xs text-gray-600 transition-colors duration-200 sm:text-sm ">
+                {{fil.label}}
             </button>
-            <button class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
-                Monitored
-            </button>
-            <button class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
-                Unmonitored
-            </button>
-            <span class="text-sm m-2 text-gray-800 dark:text-gray-300">{{ len_table }} Datos</span>
         </div>
         <div class="flex items-center">
             <button v-if="hayValorSearchInputs" @click="limpiarFiltros" class="flex items-center justify-center px-2 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
                 <span>Limpiar Filtros</span>
             </button>
             <div class="relative flex items-center mt-4 md:mt-0">
+                <span class="absolute text-sm m-2 right-0 text-gray-800 dark:text-gray-300">{{ len_table }} Datos</span>
                 <span class="absolute">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mx-3 text-gray-400 dark:text-gray-600">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
@@ -288,7 +300,7 @@ const hayValorSearchInputs = computed(() => {
                             <tr v-for="(row, rowIndex) in paginatedData" :key="rowIndex" class="dark:hover:bg-gray-800">
                                 <td v-if="numerarRow" class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                     <div class="text-gray-700 dark:text-gray-200">
-                                        {{ (rowIndex + 1)+ perPage*(currentPage -1) }}
+                                        {{ (rowIndex + 1)+ tableLenElemPag*(currentPage -1) }}
                                     </div>
                                 </td>
                                 <template v-for="(dat, _key) in row" :key="_key">
@@ -304,12 +316,22 @@ const hayValorSearchInputs = computed(() => {
                                 <!-- Columna para los botones personalizados -->
                                 <td v-if="customButtons" class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                     <!-- Bucle para los botones personalizados -->
-                                    <button v-for="(button, buttonIndex) in customButtons" :key="buttonIndex"
-                                        @click="handleCustomButtonClick(button.action, row['__id__'])" class="mx-1"
-                                        :class="button.buttonClasses || 'text-sm rounded-md bg-blue-500 text-white hover:bg-blue-600'"
-                                    >
-                                        {{ button.label }}
-                                    </button>
+                                    <template v-for="(button, buttonIndex) in customButtons" :key="buttonIndex">
+                                        <template v-if="button.novercondición ">
+                                            <template v-for="(condiciones, conIndex) in button.novercondición" :key="conIndex">
+                                                <button v-if="!condiciones.includes(row[conIndex])" @click="handleCustomButtonClick(button.action, row['__id__'])" class="mx-1"
+                                                    :class="button.buttonClasses || 'text-sm rounded-md bg-blue-500 text-white hover:bg-blue-600'">
+                                                    {{ button.label }}
+                                                </button>
+                                            </template>
+                                        </template>
+                                        <button v-else @click="handleCustomButtonClick(button.action, row['__id__'])" class="mx-1"
+                                            :class="button.buttonClasses || 'text-sm rounded-md px-2 py-1 bg-blue-500 text-white hover:bg-blue-600'"
+                                        >
+                                            {{ button.label }}
+                                        </button>
+                                    </template>
+                                    
                                 </td>
                             </tr>
                         </tbody>

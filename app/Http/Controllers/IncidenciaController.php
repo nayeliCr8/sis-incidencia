@@ -98,4 +98,26 @@ class IncidenciaController extends Controller
     {
         //
     }
+
+    public function crearResuelto(Request $request, Incidencia $incidencia)
+    {
+        // dd($incidencia);
+        $incidencia->estado = $request->estado;
+        
+        $incidencia->save();
+
+        // \dd($request);
+        $img = $request->file('evidencia')->store('public/imagen');
+        $image = Storage::url($img);
+
+        $resuelto = new Resuelto();
+        $resuelto->evidencia = $image;
+        $resuelto->descripcion = $request->descripcion;
+        $resuelto->incidencia_id = $incidencia->id;
+        $resuelto->user_id = auth()->user()->id;
+
+        $resuelto->save();
+
+        // return $request->all();
+    }
 }

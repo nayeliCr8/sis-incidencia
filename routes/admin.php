@@ -24,6 +24,7 @@ Route::get('prueba', function(){
 Route::middleware(['auth'])->group(function () {
     Route::resource('etiqueta', EtiquetaController::class);
     Route::resource('incidencias',IncidenciaController::class);
+    Route::put('incidencia/{incidencia}', [IncidenciaController::class,'crearResuelto'])->name('incidencias.crearResuelto');
     Route::resource('sedes',SedeController::class);
     Route::resource('oficinas',OficinaController::class);
     Route::resource('equipos',EquipoController::class);

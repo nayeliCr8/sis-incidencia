@@ -21,7 +21,6 @@ const props = defineProps({
     incidencias: Object,
     estados: Object,
 });
-
 const form = useForm({
     _method: 'PUT',
     estado: "",
@@ -53,49 +52,67 @@ const updatePhotoPreview = () => {
 
 const id = ref();
 const tablekeysheaders= ref({
-        'estado':'Estado','nivel':'Nivel','user.perfil.nombre':'Usuario'
+      'id':'ID','estado':'Estado','nivel':'Nivel','user.perfil.nombre':'Usuario','etiqueta.nombre|extraetiqueta':'Incidencia',
     }
 );
+
+
 const customClassColum= ref({
         'estado': {
-            'Incidencia': "px-2 py-1 text-sm rounded-md bg-yellow-500 text-white hover:bg-yellow-600",
-            'Suspendido': "px-2 py-1 text-sm rounded-md bg-red-500 text-white hover:bg-red-600",
-            'Pendiente': "px-2 py-1 text-sm rounded-md bg-blue-500 text-white hover:bg-blue-600",
-            'Solucionado': "px-2 py-1 text-sm rounded-md bg-green-500 text-white hover:bg-green-600",
+            'Incidencia': "rounded-full bg-yellow-100 px-2 py-1 font-semibold text-yellow-600 border-2 border-yellow-600 dark:bg-gray-700 dark:text-yellow-400",
+            'Suspendido': "rounded-full bg-red-100 px-2 py-1 font-semibold text-red-600 border-2 border-red-600 dark:bg-gray-700 dark:text-red-400",
+            'Pendiente': "rounded-full bg-blue-100 px-2 py-1 font-semibold text-blue-600 border-2 border-blue-600 dark:bg-gray-700 dark:text-blue-400",
+            'Solucionado': "rounded-full bg-green-100 px-2 py-1 font-semibold text-green-600 border-2 border-green-600 dark:bg-gray-700 dark:text-green-400",
         },
         'nivel': {
-            'No urgente': "px-2 py-1 text-sm rounded-md bg-yellow-500 text-white hover:bg-yellow-600",
-            'Urgente':"px-2 py-1 text-sm rounded-md bg-red-500 text-white hover:bg-red-600"
+            'No urgente': "rounded-full bg-yellow-100 px-2 py-1 font-semibold text-yellow-600 border-2 border-yellow-600 dark:bg-yellow-900 dark:text-yellow-200",
+            'Urgente':"rounded-full bg-red-100 px-2 py-1 font-semibold text-red-600 border-2 border-red-600 dark:bg-red-900 dark:text-red-200"
         },
     }
 );
 const customButtons= ref([{
         label: "Resolver",
         action: 'editar',
+        novercondición:{'estado':'Solucionado'},
         buttonClasses: "px-2 py-1 text-sm rounded-md bg-green-500 text-white hover:bg-green-600",
     },
     {
         label: "Ver información",
         action: 'eliminar',
-        buttonClasses: "px-2 py-1 text-sm rounded-md bg-red-500 text-white hover:bg-red-600",
+        buttonClasses: "px-2 py-1 border-2 text-sm rounded-md text-white hover:bg-gray-600",
     },
     // Puedes agregar más botones personalizados con clases de estilo personalizadas
 ]);
-const edit=(val)=>{
-    const item = props.incidencias.find(incidencia => incidencia.id === val); // para buscar un dato por su id
-    console.log(item);
-    form.put(route('admin.incidencia.update',val));
-} 
-const eli=(val)=>{
-    console.log('tengo q eliminar');
-    console.log(val);
-}
+const tableFiltros= ref([
+    {
+        label: "Incidencias",
+        key: "estado",
+        val: "Incidencia",
+    },
+    {
+        label: "Pendientes",
+        key: "estado",
+        val: "Pendiente",
+    },
+    {
+        label: "Suspendidos",
+        key: "estado",
+        val: "Suspendido",
+        active: true,
+    },
+    {
+        label: "Solucionados",
+        key: "estado",
+        val: "Solucionado",
+    },
+]);
 
 const showModel = ref(false);
 const showDataModel = ref(false);
 
 const closeModal = () => {
   showModel.value = false;
+  photoPreview.value = null;
   form.reset();
 };
 
@@ -113,7 +130,6 @@ const FormStore = (val) => {
 const showData = (val) => {
     showDataModel.value=true;
     itemdatos.value = props.incidencias.find(incidencia => incidencia.id === val); // para buscar un dato por su id
-    console.log(itemdatos.value);
 }
 
 const closeDataModal = () => {
@@ -123,12 +139,17 @@ const closeDataModal = () => {
 
 
 const save = () => {
-    form.post(route('admin.incidencias.update', id.value), {
-        onSuccess: () => {
-            form.get(route('admin.incidencias.update', id.value));
-            closeModal()
-        },
-    });
+    form.post(route('admin.incidencias.crearResuelto', id.value), {
+          onSuccess: () => {
+              closeModal()
+          },
+      });
+    // form.post(route('admin.incidencias.update', id.value), {
+    //     onSuccess: () => {
+    //         form.get(route('admin.incidencias.update', id.value));
+    //         closeModal()
+    //     },
+    // });
 };
 
 
@@ -229,9 +250,6 @@ const formattedDate = (dat) => {
                     </Modal>
                   </div>
             </div>
-            <SecondaryButton @click="displayingToken = true">
-                Abrir
-            </SecondaryButton>
             <div class="mt-6">
                 <DataTable
                     :numerarRow="true"
@@ -239,9 +257,11 @@ const formattedDate = (dat) => {
                     :tableData="incidencias"
                     :custom-class-colum="customClassColum"
                     :customButtons="customButtons"
+                    :tableFiltros="tableFiltros"
                     @editar="FormStore"
                     @eliminar="showData"
                     />
+                  <Table></Table>
             </div>
         </div>
         <div>
@@ -257,7 +277,7 @@ const formattedDate = (dat) => {
                               <p class="font-medium text-lg">Evidencia</p>
                               <!-- <p>Please fill out all the fields.</p> -->
 
-                              <div> 
+                              <div class="flex w-full justify-center"> 
                                 <figure class="h-auto max-w-lg transition-all duration-300 rounded-lg cursor-pointer filter grayscale hover:grayscale-0">
                                     <!-- <a href="#"> -->
                                       <img class="rounded-lg" :src="itemdatos.evidencia" alt="image description">
@@ -278,7 +298,6 @@ const formattedDate = (dat) => {
                                 <div class="md:col-span-5">
                                   <label for="full_name">Nombre se usuario </label>
                                   <div class="p-2 border mt-1 items-center rounded px-4 w-full bg-gray-50">{{ itemdatos.user.name }} {{ itemdatos.user.perfil.apellidos }}</div>
-                                  <!-- <input type="text" name="full_name" id="full_name"  value="" /> -->
                                 </div>
                   
                                 <div class="md:col-span-5">
