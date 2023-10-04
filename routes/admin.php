@@ -19,7 +19,7 @@ Route::resource('permissions', PermissionController::class);
 
 Route::get('prueba', function(){
     return Inertia::render('admin/adminhome');
-})->name('prueba')->middleware(['auth','role:superadmin']);
+})->name('prueba');
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('etiqueta', EtiquetaController::class);

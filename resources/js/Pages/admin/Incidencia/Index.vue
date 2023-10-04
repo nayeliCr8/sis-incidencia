@@ -88,7 +88,7 @@ const customButtons= ref([{
         label: "Ver información",
         action: 'eliminar',
         permisos: true,
-        buttonClasses: "px-2 py-1 border-2 text-sm rounded-md text-white hover:bg-gray-600",
+        buttonClasses: "px-2 py-1 border-2 text-sm bg-gray-200 rounded-md hover:bg-gray-300 dark:text-white dark:hover:bg-gray-600",
     },
     // Puedes agregar más botones personalizados con clases de estilo personalizadas
 ]);

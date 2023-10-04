@@ -53,7 +53,7 @@ const logout = () => {
                      </SederbarLink>
                      </div>
                  </li>
-                 <li>
+                 <!-- <li>
                      <div>
                         <SederbarLink :href="route('admin.etiqueta.index')" :active="route().current('admin.etiqueta.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -63,7 +63,7 @@ const logout = () => {
                             <span class="group-hover:text-gray-700">Categories</span>
                         </SederbarLink>
                      </div>
-                 </li>
+                 </li> -->
                  <li>
                     <div>
                         <SederbarLink :href="route('admin.incidencias.index')" :active="route().current('admin.incidencias.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">

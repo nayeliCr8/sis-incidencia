@@ -159,7 +159,7 @@ const logout = () => {
                                             API Tokens
                                         </DropdownLink>
 
-                                        <DropdownLink v-if="hasRole('superadmin')" :href="route('admin.prueba')">
+                                        <DropdownLink v-if="hasRole('superadmin') || hasRole('administrador') || hasRole('practicante')" :href="route('admin.incidencias.index')">
                                             <span class="flex items-center">
                                                 <svg class="-ml-1 h-6 w-6" viewBox="0 0 24 24" fill="none">
                                                     <path d="M6 8a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V8ZM6 15a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-1Z" class="fill-current text-cyan-400 dark:fill-slate-600"></path>
