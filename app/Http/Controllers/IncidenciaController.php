@@ -14,9 +14,16 @@ use PhpParser\Node\Expr\Cast\String_;
 
 class IncidenciaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('can:incidencia index')->only('index');
+        $this->middleware('can:incidencia create')->only('create','store');
+        $this->middleware('can:incidencia resolver')->only('edit','update');
+        $this->middleware('can:incidencia delete')->only('destroy');
+    }
+
     public function index()
     {
         $incidencias = Incidencia::with(

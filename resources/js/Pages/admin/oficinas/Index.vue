@@ -12,10 +12,13 @@ import Modal from "@/Components/Modal.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import InputError from "@/Components/InputError.vue";
+import { usePermission } from "@/composables/permissions";
 const props = defineProps({
   oficinas: Object,
   sedes: Object,
 });
+
+const {hasPermission} = usePermission();
 
 console.log(props.oficinas);
 
@@ -77,7 +80,7 @@ const save = () => {
 
   <AdminLayout>
     <div class="max-w-7xl mx-auto py-4">
-      <div class="flex justify-end mr-6">
+      <div class="flex justify-end mr-6" v-if="hasPermission('oficina create')">
         <!-- <h1>Users Index Page</h1> -->
         <SecondaryButton @click="FormStore">Registrar Oficina</SecondaryButton>
         <Modal :show="showModel" @close="closeModal">
@@ -123,7 +126,9 @@ const save = () => {
               <TableHeaderCell>Sede</TableHeaderCell>
               <TableHeaderCell>Personal</TableHeaderCell>
               <TableHeaderCell>Equipos</TableHeaderCell>
-              <TableHeaderCell>Action</TableHeaderCell>
+              <template v-if="hasPermission('oficina update', 'oficina delete')">
+                <TableHeaderCell>Action</TableHeaderCell>
+              </template>
             </TableRow>
           </template>
           <template #default>
@@ -142,21 +147,19 @@ const save = () => {
                 </div> 
               </TableDataCell>
               <TableDataCell class="space-x-4">
-
-                <PrimaryButton @click="FormUpdate(0,oficina)">Editar</PrimaryButton>
-                <!-- <Link
-                  :href="route('admin.sedes.edit', sede.id)"
-                  class="text-green-400 hover:text-green-600"
-                  >Edit</Link
-                > -->
-                <Link
-                  :href="route('admin.oficinas.destroy', oficina.id)"
-                  method="delete"
-                  as="button"
-                  type="button"
-                  class="font-medium text-red-500 hover:text-red-700 mr-2"
-                  >Delete</Link
-                >
+                <template v-if="hasPermission('oficina update')">
+                  <PrimaryButton @click="FormUpdate(0,oficina)">Editar</PrimaryButton>
+                </template>
+                <template v-if="hasPermission('oficina delete')">
+                  <Link
+                    :href="route('admin.oficinas.destroy', oficina.id)"
+                    method="delete"
+                    as="button"
+                    type="button"
+                    class="font-medium text-red-500 hover:text-red-700 mr-2"
+                    >Delete</Link
+                  >
+                </template>
               </TableDataCell>
             </TableRow>
           </template>

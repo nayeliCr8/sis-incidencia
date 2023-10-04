@@ -12,9 +12,15 @@ use Inertia\Inertia;
 
 class OficinaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('can:oficina index')->only('index');
+        $this->middleware('can:oficina create')->only('create','store');
+        $this->middleware('can:oficina update')->only('edit','update');
+        $this->middleware('can:oficina delete')->only('destroy');
+    }
+
     public function index()
     {
         // $oficinas = OficinaResource::collection(Oficina::with('sede','equipos')->get());

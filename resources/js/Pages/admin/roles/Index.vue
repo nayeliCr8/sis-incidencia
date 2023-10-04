@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
+import { usePermission } from "@/composables/permissions";
 import Table from "@/Components/Table.vue";
 import TableRow from "@/Components/TableRow.vue";
 import TableHeaderCell from "@/Components/TableHeaderCell.vue";
@@ -12,6 +13,7 @@ import SecondaryButton from "@/Components/SecondaryButton.vue";
 
 defineProps(["roles"]);
 const form = useForm({});
+const { hasPermission } = usePermission();
 
 const showConfirmDeleteRoleModal = ref(false);
 
@@ -35,7 +37,7 @@ const deleteRole = (id) => {
 
   <AdminLayout>
     <div class="max-w-7xl mx-auto py-4">
-      <div class="flex justify-between">
+      <div class="flex justify-between" v-if="hasPermission('rol create')">
         <h1>Roles Index Page</h1>
         <Link
           :href="route('admin.roles.create')"
@@ -49,7 +51,9 @@ const deleteRole = (id) => {
             <TableRow>
               <TableHeaderCell>ID</TableHeaderCell>
               <TableHeaderCell>Name</TableHeaderCell>
-              <TableHeaderCell>Action</TableHeaderCell>
+              <template  v-if="hasPermission('rol update','rol delete')">
+                <TableHeaderCell>Action</TableHeaderCell>
+              </template>
             </TableRow>
           </template>
           <template #default>
@@ -57,17 +61,21 @@ const deleteRole = (id) => {
               <TableDataCell v-if="role.id != 1">{{ role.id }}</TableDataCell>
               <TableDataCell v-if="role.id != 1">{{ role.name }}</TableDataCell>
               <TableDataCell v-if="role.id != 1" class="space-x-4">
-                <Link
-                  :href="route('admin.roles.edit', role.id)"
-                  class="text-green-400 hover:text-green-600"
-                  >Edit</Link
-                >
-                <button
-                  @click="confirmDeleteRole"
-                  class="text-red-400 hover:text-red-600"
-                >
-                  Delete
-                </button>
+                <template v-if="hasPermission('rol update')">
+                  <Link
+                    :href="route('admin.roles.edit', role.id)"
+                    class="text-green-400 hover:text-green-600"
+                    >Edit</Link
+                  >
+                </template>
+                <template v-if="hasPermission('rol delete')">
+                  <button
+                    @click="confirmDeleteRole"
+                    class="text-red-400 hover:text-red-600"
+                  >
+                    Delete
+                  </button>
+                </template>
                 <Modal :show="showConfirmDeleteRoleModal" @close="closeModal">
                   <div class="p-6">
                     <h2 class="text-lg font-semibold text-slate-800">

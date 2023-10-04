@@ -9,10 +9,11 @@ import TableDataCell from "@/Components/TableDataCell.vue";
 import Modal from "@/Components/Modal.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
-
+import { usePermission } from "@/composables/permissions";
 defineProps(["permissions"]);
 
 const form = useForm({})
+const { hasPermission } = usePermission();
 
 const showConfirmDeletePermissionModal = ref(false)
 
@@ -36,7 +37,7 @@ const deletePermission = (id) => {
 
   <AdminLayout>
     <div class="max-w-7xl mx-auto py-4">
-      <div class="flex justify-between">
+      <div class="flex justify-between" v-if="hasPermission('permiso create')">
         <h1>Permission Index Page</h1>
         <Link
           :href="route('admin.permissions.create')"
@@ -50,7 +51,9 @@ const deletePermission = (id) => {
             <TableRow>
               <TableHeaderCell>ID</TableHeaderCell>
               <TableHeaderCell>Name</TableHeaderCell>
-              <TableHeaderCell>Action</TableHeaderCell>
+              <template  v-if="hasPermission('permiso update','permiso delete')">
+                <TableHeaderCell>Action</TableHeaderCell>
+              </template>
             </TableRow>
           </template>
           <template #default>
@@ -62,12 +65,16 @@ const deletePermission = (id) => {
               <TableDataCell>{{ permission.id }}</TableDataCell>
               <TableDataCell>{{ permission.name }}</TableDataCell>
               <TableDataCell class="space-x-4">
-                <Link
-                  :href="route('admin.permissions.edit', permission.id)"
-                  class="text-green-400 hover:text-green-600"
-                  >Edit</Link
-                >
-              <button @click="confirmDeletePermission" class="text-red-400 hover:text-red-600">Delete</button>
+                <template v-if="hasPermission('permiso update')">
+                  <Link
+                    :href="route('admin.permissions.edit', permission.id)"
+                    class="text-green-400 hover:text-green-600"
+                    >Edit</Link
+                  >
+                </template>
+              <template v-if="hasPermission('permiso delete')">
+                <button @click="confirmDeletePermission" class="text-red-400 hover:text-red-600">Delete</button>
+              </template>
                <Modal :show="showConfirmDeletePermissionModal" @close="closeModal">
                  <div class="p-6">
                   <h2 class="text-lg font-semibold text-slate-800">Are you sure to delete this Permission?</h2>

@@ -9,11 +9,11 @@ import TableDataCell from "@/Components/TableDataCell.vue";
 import Modal from "@/Components/Modal.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
-
+import { usePermission } from "@/composables/permissions";
 
 defineProps(["users"]);
 const form = useForm({})
-
+const { hasPermission } = usePermission();
 const showConfirmDeleteUserModal = ref(false)
 
 const confirmDeleteUser = () => {
@@ -35,7 +35,7 @@ const deleteUser = (id) => {
   <Head title="Users index" />
 
   <AdminLayout>
-    <div class="max-w-7xl mx-auto py-4">
+    <div class="max-w-7xl mx-auto py-4" v-if="hasPermission('user index')">
       <div class="flex justify-between mr-6">
         <h1>Users Index Page</h1>
         <Link

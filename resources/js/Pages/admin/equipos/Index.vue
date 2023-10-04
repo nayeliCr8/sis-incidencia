@@ -11,11 +11,11 @@ import InputLabel from "@/Components/InputLabel.vue";
 import InputError from "@/Components/InputError.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { ref } from "vue";
-
+import { usePermission } from "@/composables/permissions";
 const props = defineProps({
   equipos: Object,
 });
-
+const {hasPermission} = usePermission();
 const showModel = ref(false);
 
 const FormStore = () => {
@@ -31,7 +31,7 @@ const closeModal = () => {
   <Head title="Equipos" />
   <AdminLayout>
     <div class="max-w-7xl mx-auto py-4">
-      <div class="flex justify-end mr-6">
+      <div class="flex justify-end mr-6" v-if="hasPermission('equipo create')">
         <Link :href="route('admin.equipos.create')" class="inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-25 transition ease-in-out duration-150">Registrar Equipo</Link>
         <!-- <SecondaryButton @click="FormStore">Registrar Equipo</SecondaryButton> -->
         <!-- <Modal :show="showModel" @close="closeModal">
@@ -88,7 +88,9 @@ const closeModal = () => {
               <TableHeaderCell>Estado</TableHeaderCell>
               <TableHeaderCell>Tipo</TableHeaderCell>
               <TableHeaderCell>Oficina</TableHeaderCell>
-              <TableHeaderCell>Acciones</TableHeaderCell>
+              <template v-if="hasPermission('equipo update','equipo delete')">
+                <TableHeaderCell>Acciones</TableHeaderCell>
+              </template>
             </TableRow>
           </template>
           <template #default>
@@ -101,17 +103,21 @@ const closeModal = () => {
               <TableDataCell class="space-x-4">{{ equipo.oficina.nombre }}</TableDataCell>
               <TableDataCell class="space-x-4">
                 <div class="mt-6 flex space-x-4">
-                  <Link :href="route('admin.equipos.edit', equipo.id)" class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
-                    Editar
-                  </Link>
-                  <Link
-                  :href="route('admin.equipos.destroy', equipo.id)"
-                  method="delete"
-                  as="button"
-                  type="button"
-                  class="inline-flex items-center justify-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150"
-                  >Delete</Link
-                >
+                  <template v-if="hasPermission('equipo update')">
+                    <Link :href="route('admin.equipos.edit', equipo.id)" class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                      Editar
+                    </Link>
+                  </template>
+                  <template v-if="hasPermission('equipo delete')">
+                    <Link
+                    :href="route('admin.equipos.destroy', equipo.id)"
+                    method="delete"
+                    as="button"
+                    type="button"
+                    class="inline-flex items-center justify-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150"
+                    >Delete</Link
+                  >
+                  </template>
                 </div>
               </TableDataCell>
             </TableRow>

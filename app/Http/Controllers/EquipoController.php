@@ -16,9 +16,16 @@ use Illuminate\Support\Collection;
 
 class EquipoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('can:equipo index')->only('index');
+        $this->middleware('can:equipo create')->only('create','store');
+        $this->middleware('can:equipo update')->only('edit','update');
+        $this->middleware('can:equipo delete')->only('destroy');
+    }
+
     public function index()
     {
         $equipos = EquipoResource::collection(Equipo::with('oficina')->get());
