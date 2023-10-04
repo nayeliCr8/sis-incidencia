@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link } from "@inertiajs/vue3";
+import { Head, Link, useForm } from "@inertiajs/vue3";
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import Table from "@/Components/Table.vue";
 import TableHeaderCell from "@/Components/TableHeaderCell.vue";
@@ -12,18 +12,42 @@ import InputError from "@/Components/InputError.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { ref } from "vue";
 import { usePermission } from "@/composables/permissions";
+import DataTable from "@/Components/MyComponents/DataTable2.vue";
 const props = defineProps({
   equipos: Object,
 });
 const {hasPermission} = usePermission();
-const showModel = ref(false);
 
-const FormStore = () => {
-  showModel.value = true;
+const tablekeysheaders= ref({
+     'marca':'Marca','serie':'Serie','tipo_equipo':'Tipo Equipo','oficina.nombre':'Oficina'
+    }
+);
+
+const customButtons= ref([{
+        label: "Editar",
+        action: 'editar',
+        permisos: hasPermission('equipo update'),
+        buttonClasses: "inline-flex items-center justify-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-500 active:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150",
+    },
+    {
+        label: "Eliminar",
+        action: 'eliminar',
+        permisos: hasPermission('equipo delete'),
+        buttonClasses: "inline-flex items-center justify-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150",
+    },
+    // Puedes agregar más botones personalizados con clases de estilo personalizadas
+]);
+
+const tableFiltros= ref([]);
+
+const form = useForm({});
+
+const editEquipo = (id) => {
+  form.get(route("admin.equipos.edit", id));
 };
 
-const closeModal = () => {
-  showModel.value = false;
+const deleteEquipo = (id) => {
+  form.delete(route("admin.equipos.destroy", id));
 };
 </script>
 
@@ -79,7 +103,16 @@ const closeModal = () => {
         </Modal> -->
       </div>
       <div class="mt-6">
-        <Table>
+        <DataTable
+        :numerarRow="true"
+        :table-keys-headers="tablekeysheaders" 
+        :tableData="equipos"
+        :customButtons="customButtons"
+        :tableFiltros="tableFiltros"
+        @editar="editEquipo"
+        @eliminar="deleteEquipo"
+        />
+        <!-- <Table>
           <template #header>
             <TableRow>
               <TableHeaderCell>Marca</TableHeaderCell>
@@ -122,7 +155,7 @@ const closeModal = () => {
               </TableDataCell>
             </TableRow>
           </template>
-        </Table>
+        </Table> -->
       </div>
     </div>
   </AdminLayout>
