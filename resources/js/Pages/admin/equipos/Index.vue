@@ -19,10 +19,19 @@ const props = defineProps({
 const {hasPermission} = usePermission();
 
 const tablekeysheaders= ref({
-     'marca':'Marca','serie':'Serie','tipo_equipo':'Tipo Equipo','oficina.nombre':'Oficina'
+     'marca':'Marca','serie':'Serie','tipo_equipo':'Tipo Equipo','oficina.nombre':'Oficina','estado':'Estado'
     }
 );
 
+const customClassColum= ref({
+        'estado': {
+            'Regular': "rounded-full bg-yellow-100 px-2 py-1 font-semibold text-yellow-600 border-2 border-yellow-600 dark:bg-gray-700 dark:text-yellow-400",
+            'Pesimo': "rounded-full bg-red-100 px-2 py-1 font-semibold text-red-600 border-2 border-red-600 dark:bg-gray-700 dark:text-red-400",
+            'Bueno': "rounded-full bg-blue-100 px-2 py-1 font-semibold text-blue-600 border-2 border-blue-600 dark:bg-gray-700 dark:text-blue-400",
+            'Excelente': "rounded-full bg-green-100 px-2 py-1 font-semibold text-green-600 border-2 border-green-600 dark:bg-gray-700 dark:text-green-400",
+        }
+    }
+);
 const customButtons= ref([{
         label: "Editar",
         action: 'editar',
@@ -108,6 +117,7 @@ const deleteEquipo = (id) => {
         :table-keys-headers="tablekeysheaders" 
         :tableData="equipos"
         :customButtons="customButtons"
+        :custom-class-colum="customClassColum"
         :tableFiltros="tableFiltros"
         @editar="editEquipo"
         @eliminar="deleteEquipo"
