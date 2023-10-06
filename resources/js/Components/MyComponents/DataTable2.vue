@@ -1,7 +1,7 @@
 <script setup>
 import { computed, reactive, ref, watch, watchEffect } from 'vue';
 // Define una referencia para guardar las emisiones
-const emit = defineEmits(['editar', 'eliminar']);
+const emit = defineEmits(['editar', 'eliminar','detalles']);
 
 const props = defineProps({
     tableKeysHeaders: { // contiene las llaves y cabeceras
@@ -18,7 +18,7 @@ const props = defineProps({
     },
     tableFiltros: { // contiene los elementos de los filtros
         type: Object,
-        default: null,
+        default: [],
     },
     customClassColum: { // contiene a los botones
         type: Object,
@@ -93,10 +93,10 @@ for (const configKey in props.tableKeysHeaders) {
     columnSearchInputs.value[configKey] = '';
     openSearchColumns.value[configKey] = false;
 }
-props.tableFiltros.push({
-    label: "Todos",
-    val: "full",
-})
+// props.tableFiltros.push({
+//     label: "Todos",
+//     val: "full",
+// })
 // Dato para la llave del dato y direccion para ordenar
 const sortConfig = ref({
     key: '',        // La clave de la columna por la que se está ordenando

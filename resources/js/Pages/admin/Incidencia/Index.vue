@@ -16,6 +16,7 @@ import TextInput from "@/Components/TextInput.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import InputError from "@/Components/InputError.vue";
+import InputImage from "@/Components/MyComponents/InputImage.vue";
 import { usePermission } from "@/composables/permissions";
 
 
@@ -58,7 +59,7 @@ const updatePhotoPreview = () => {
 
 const id = ref();
 const tablekeysheaders= ref({
-      'id':'ID','estado':'Estado','nivel':'Nivel','user.perfil.nombre':'Usuario','etiqueta.nombre|extraetiqueta':'Incidencia',
+      'estado':'Estado','user.perfil.nombre':'Usuario','etiqueta.nombre|extraetiqueta':'Incidencia',
     }
 );
 
@@ -92,30 +93,6 @@ const customButtons= ref([{
     },
     // Puedes agregar más botones personalizados con clases de estilo personalizadas
 ]);
-const tableFiltros= ref([
-    {
-        label: "Incidencias",
-        key: "estado",
-        val: "Incidencia",
-    },
-    {
-        label: "Pendientes",
-        key: "estado",
-        val: "Pendiente",
-    },
-    {
-        label: "Suspendidos",
-        key: "estado",
-        val: "Suspendido",
-        active: true,
-    },
-    {
-        label: "Solucionados",
-        key: "estado",
-        val: "Solucionado",
-    },
-]);
-
 const showModel = ref(false);
 const showDataModel = ref(false);
 
@@ -124,7 +101,6 @@ const closeModal = () => {
   photoPreview.value = null;
   form.reset();
 };
-
 
 const FormStore = (val) => {
   
@@ -214,39 +190,14 @@ const formattedDate = (dat) => {
                         </div>
                         <div class="mb-6">
                           <InputLabel>Evidencia</InputLabel>
-                          <input
-                          ref="photoInput"
-                          type="file"
-                          class="hidden"
-                          @input="test"
-                          @change="updatePhotoPreview"
-                      >
-      
-                      <InputLabel for="photo" value="Photo" />
-      
-                      <!-- Current Profile Photo -->
-                      <!-- <div v-show="! photoPreview" class="mt-2">
-                          <img :src="user.profile_photo_url" :alt="user.name" class="rounded-full h-20 w-20 object-cover">
-                      </div> -->
-      
-                      <!-- New Profile Photo Preview -->
-                      <div v-show="photoPreview" class="mt-2">
-                          <span
-                              class="block rounded-full w-20 h-20 bg-cover bg-no-repeat bg-center"
-                              :style="'background-image: url(\'' + photoPreview + '\');'"
-                          />
-                      </div>
-      
-                      <SecondaryButton class="mt-2 mr-2" type="button" @click.prevent="selectNewPhoto">
-                          Select A New Photo
-                      </SecondaryButton>
+                          <InputImage v-model="form.evidencia"></InputImage>
                           <!-- <TextInput class="w-full" v-model="form.evidencia"></TextInput> -->
                           <InputError class="mt-2" :message="form.errors.evidencia" />
                         </div>
                         <div class="mb-6">
                             <InputLabel>Descripción</InputLabel>
                             <textarea
-                              class="w-full rounded dark:bg-gray-800 text-white"
+                              class="w-full rounded dark:bg-gray-800 dark:text-white"
                               rows="5"
                               v-model="form.descripcion"
                             />
@@ -271,7 +222,6 @@ const formattedDate = (dat) => {
                     @editar="FormStore"
                     @eliminar="showData"
                     />
-                  <Table></Table>
             </div>
         </div>
         <div>

@@ -39,6 +39,12 @@ const customButtons= ref([{
         permisos: hasPermission('oficina delete'),
         buttonClasses: "inline-flex items-center justify-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150",
     },
+    {
+        label: "Ver Detalles",
+        action: 'detalles',
+        permisos: true,
+        buttonClasses: "px-2 py-1 border-2 text-sm bg-gray-200 rounded-md hover:bg-gray-300 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-600",
+    },
     // Puedes agregar más botones personalizados con clases de estilo personalizadas
 ]);
 
@@ -90,8 +96,13 @@ const deleteOficina = (id) => {
     onSuccess: () => closeModal()
    });
 }
-  
-// };
+const showDataModel = ref(false);
+const datos = ref(null);
+const verDetalles = (id) =>{
+    showDataModel.value=true;
+    datos.value = props.oficinas.find(incidencia => incidencia.id === id); // para buscar un dato por su id
+    console.log(datos.value);
+}
 </script>
 <template>
   <Head title="Dashboard" />
@@ -136,13 +147,14 @@ const deleteOficina = (id) => {
       </div>
       <div class="mt-6">
         <DataTable
-        :numerarRow="true"
-        :table-keys-headers="tablekeysheaders" 
-        :tableData="oficinas"
-        :customButtons="customButtons"
-        :tableFiltros="tableFiltros"
-        @editar="FormUpdate"
-        @eliminar="deleteOficina"
+          :numerarRow="true"
+          :table-keys-headers="tablekeysheaders" 
+          :tableData="oficinas"
+          :customButtons="customButtons"
+          :tableFiltros="tableFiltros"
+          @editar="FormUpdate"
+          @eliminar="deleteOficina"
+          @detalles="verDetalles"
         />
         <!-- <Table>
           <template #header>
@@ -192,6 +204,62 @@ const deleteOficina = (id) => {
         </Table> -->
       </div>
     </div>
+
+    <Modal :show="showDataModel" @close="showDataModel = false" maxWidth="5xl">
+      <div class="p-4 bg-gray-100 flex items-center justify-center">
+          <div class="container max-w-screen-lg mx-auto">
+            <div>
+              <h2 class="font-semibold text-xl text-gray-600">Detalles de la Incidencia</h2>
+              <div class="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
+                <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
+                  <div class="text-gray-600 lg:col-span-2">
+                    <p class="font-medium text-lg">{{ datos.nombre }}</p>
+                    <div class="flex w-full justify-center space-x-4"> 
+                      <div class="md:col-span-5">
+                        <label>Equipos</label>
+                        <div v-if="!datos.equipos[0]" class="p-2 border mt-1 items-center rounded px-4 w-full bg-gray-50"> Sin Equipos </div>
+                        <div v-for="equ in datos.equipos" class="p-2 border mt-1 items-center rounded px-4 w-full bg-gray-50">
+                            {{ equ.tipo_equipo }} - {{ equ.marca }} - {{ equ.ip }}
+                        </div>
+                      </div>
+                      <div class="md:col-span-5">
+                        <label>Usuarios</label>
+                        <div v-if="!datos.perfils[0]" class="p-2 border mt-1 items-center rounded px-4 w-full bg-gray-50">* Sin Usuarios</div>
+                        <div v-for="per in datos.perfils" class="p-2 border mt-1 items-center rounded px-4 w-full bg-gray-50">
+                            {{ per.nombre }} {{ per.apellidos }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+        
+                  <div class="lg:col-span-1">
+                    <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
+                      <div class="md:col-span-5">
+                        <label>Sede:</label>
+                        <div class="p-2 border mt-1 items-center rounded px-4 w-full bg-gray-50">
+                          {{ datos.sede.nombre }}
+                        </div>
+                      </div>
+                      <div class="md:col-span-5">
+                        <label>Direccion:</label>
+                        <div class="p-2 border mt-1 items-center rounded px-4 w-full bg-gray-50">
+                          {{ datos.sede.direccion }}
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+                <div class="md:col-span-5 text-right lg:mt-4">
+                          <SecondaryButton @click="showDataModel = false">Cerrar</SecondaryButton>
+                      </div>
+              </div>
+              
+            </div>
+            
+          </div>
+        </div>
+      </Modal>
   </AdminLayout>
 </template>
 

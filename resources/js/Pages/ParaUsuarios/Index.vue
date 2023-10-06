@@ -10,11 +10,39 @@ import TextInput from "@/Components/TextInput.vue";
 import InputError from "@/Components/InputError.vue";
 import { ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
+import Swal from 'sweetalert2';
 
 const props = defineProps({
     usuario: Object,
     etiquetas: Object,
 });
+
+const ok = (msj,acep=true)=>{
+    form.reset();
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+    if (acep) {
+        Toast.fire({
+            icon: 'success',
+            title: msj
+        })
+        closeModal();
+    }else{
+        Toast.fire({
+            icon: 'info',
+            title: msj
+        })
+    }
+}
 
 const vermodal = ref(false);
 const val_etiqueta = ref('');
@@ -46,11 +74,26 @@ const closeModal = () => {
     form.reset();
 };
 const save = () => {
-    form.post(route('parauser.store'),{
-        onSuccess: () =>{
-            closeModal();
+    const alerta = Swal.mixin({
+        buttonsStyling:true
+    });
+    alerta.fire({
+        title: 'Esta seguro que desea enviar el reporte?',
+        // iconHtml: '<i class="fas fa-question"></i>',
+        icon: 'question',
+        showCancelButton:true,
+        confirmButtonText: '<i class="fa-solid fa-check"></i> Si, enviar.',
+        cancelButtonText: '<i class="fa-solid fa-ban"></i> Cancelar',
+    }).then((result)=>{
+        if(result.isConfirmed){
+            form.post(route('parauser.store'),{
+                onSuccess: () =>{
+                    ok('Reporte Enviado')
+                }
+            });
         }
     });
+    
 };
 </script>
 
@@ -86,7 +129,8 @@ const save = () => {
             <template #content>
                 <div class="p-4">
                     <div class="mb-6">
-                        <InputLabel>Que incidencia encontro?</InputLabel>
+                        <InputLabel><span class="text-red-500">*</span> Que incidencia encontro?</InputLabel>
+
                         <select @change="verotros" v-model="val_etiqueta" class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                             <option value="" selected disabled>-- Seleccione --</option>
                             <option v-for="eti in etiquetas" :key="eti.id" :value="eti.id">{{ eti.nombre }}</option>
@@ -98,14 +142,14 @@ const save = () => {
                     <div class="mb-6">
                         <InputLabel>Descripción</InputLabel>
                         <textarea
-                            class="w-full rounded dark:bg-gray-800 text-white"
+                            class="w-full rounded dark:bg-gray-800 dark:text-white"
                             rows="5"
                             v-model="form.descripcion"
                         />
                         <InputError class="mt-2" :message="form.errors.descripcion" />
                     </div>
                     <div class="mb-6">
-                        <InputLabel for="photo" value="Evidencia"/>
+                        <InputLabel><span class="text-red-500">*</span> Evidencia</InputLabel>
                         <InputImage v-model="form.evidencia"/>
                         <InputError class="mt-2" :message="form.errors.evidencia" />
                     </div>
