@@ -33,7 +33,7 @@ const logout = () => {
 <template>
     <div class="w-full h-full">
         <aside :class="{'w-100':showingNavigationDropdown,'ml-[-100%]':!showingNavigationDropdown}" 
-        class="fixed z-10 pb-3 pl-6 flex flex-col justify-between h-screen border-r bg-white transition duration-300 lg:ml-0 md:w-4/12 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]">
+        class="fixed z-10 pb-3 pl-6 flex flex-col justify-between h-screen border-r bg-white dark:bg-gray-900 transition duration-300 lg:ml-0 md:w-4/12 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]">
             <div class="mt-4 text-center my-2">
                 <img :src="$page.props.auth.user.profile_photo_url" :alt="$page.props.auth.user.name" class="w-10 h-10 m-auto rounded-full object-cover lg:w-28 lg:h-28">
                 <h5 class="hidden mt-4 text-xl font-semibold text-gray-600 lg:block">{{ $page.props.auth.user.name }}</h5>
@@ -148,8 +148,9 @@ const logout = () => {
          </div>
      </aside>
 
-     <div class="ml-auto mb-6 lg:w-[75%] xl:w-[80%] 2xl:w-[85%]">
-      <div class="sticky z-10 top-0 h-16 border-b bg-white lg:py-2.5">
+     <div class="ml-auto h-full lg:w-[75%] xl:w-[80%] 2xl:w-[85%]">
+        
+      <div class="sticky z-10 top-0 h-16 border-b bg-white dark:bg-gray-900 lg:py-2.5">
           <div class="px-6 flex items-center justify-between space-x-4 2xl:container">
               <h5 hidden class="text-2xl text-gray-600 font-semibold uppercase tracking-widest lg:block">Sistema de Incidencia</h5>
               <button class="w-12 h-16 -mr-2 border-r lg:hidden" @click="showingNavigationDropdown=!showingNavigationDropdown">
@@ -196,13 +197,13 @@ const logout = () => {
                   </button>
               </div>
           </div>
-      </div>
-  
-        <div class="px-6 pt-6 2xl:container">
+        </div>
+        <div class="px-6 py-7 h-full 2xl:container dark:bg-gray-900">
             <slot>
                 
             </slot>
         </div>
+  
         </div>
     </div>
 </template>
