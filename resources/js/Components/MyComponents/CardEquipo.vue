@@ -25,16 +25,16 @@ const clickbuttomn= ()=>{
 <template>
     <!-- <div>{{ datos }}</div> -->
     <!-- <div class='flex items-center m-2 rounded-lg justify-center max-w-md max-h-sm from-pink-200 via-purple-300 to-blue-500 bg-gradient-to-br'> -->
-<div class='flex items-center m-2 rounded-lg justify-center max-w-md max-h-sm bg-white'>
-    <div class='w-full max-w-lg py-8 flex flex-row items-center justify-center mx-auto bg-[#FFFBFB] rounded-lg shadow-xl'>
+<div class='flex items-center m-2 rounded-lg justify-center max-w-md max-h-sm bg-white dark:bg-gray-800'>
+    <div class='w-full max-w-lg py-8 flex flex-row items-center justify-center mx-auto bg-white rounded-lg border border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700'>
         <div class="flex flex-col md:flex-row w-3/4 md:w-5/6 space-x-0 md:space-x-8">
             <div class="w-full md:w-2/5 flex flex-col items-center justify-center text-4xl">
                 <!-- <i v-if="tipo === 'PC'" class="fa-solid fa-computer text-8xl"></i> -->
-                <svg v-if="tipo === 'PC'" class="w-24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+                <svg v-if="tipo === 'PC'" class="w-24 dark:bg-white rounded-lg p-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
                     <path d="M384 96V320H64L64 96H384zM64 32C28.7 32 0 60.7 0 96V320c0 35.3 28.7 64 64 64H181.3l-10.7 32H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H352c17.7 0 32-14.3 32-32s-14.3-32-32-32H277.3l-10.7-32H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm464 0c-26.5 0-48 21.5-48 48V432c0 26.5 21.5 48 48 48h64c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48H528zm16 64h32c8.8 0 16 7.2 16 16s-7.2 16-16 16H544c-8.8 0-16-7.2-16-16s7.2-16 16-16zm-16 80c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16s-7.2 16-16 16H544c-8.8 0-16-7.2-16-16zm32 160a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/>
                 </svg>
-                <svg v-else-if="tipo === 'Impresora'" class="w-24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"  fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
-                <svg v-else-if="tipo === 'Scanner'" class="w-24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 256 256" xml:space="preserve">
+                <svg v-else-if="tipo === 'Impresora'" class="w-24 dark:bg-white rounded-lg p-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"  fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+                <svg v-else-if="tipo === 'Scanner'" class="w-24 dark:bg-white rounded-lg p-2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 256 256" xml:space="preserve">
                     <g transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)" >
                         <path d="M 79.074 80.396 H 10.926 C 4.901 80.396 0 75.495 0 69.471 v -13.43 c 0 -1.104 0.896 -2 2 -2 h 86 c 1.104 0 2 0.896 2 2 v 13.43 C 90 75.495 85.099 80.396 79.074 80.396 z M 4 58.041 v 11.43 c 0 3.819 3.107 6.926 6.926 6.926 h 68.148 c 3.819 0 6.926 -3.106 6.926 -6.926 v -11.43 H 4 z" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
                         <path d="M 2.001 58.041 c -0.622 0 -1.235 -0.289 -1.625 -0.833 c -0.645 -0.896 -0.44 -2.146 0.457 -2.791 L 62.664 9.979 c 0.896 -0.646 2.146 -0.44 2.791 0.457 c 0.645 0.897 0.44 2.146 -0.457 2.791 L 3.167 57.665 C 2.814 57.919 2.406 58.041 2.001 58.041 z" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
@@ -43,7 +43,7 @@ const clickbuttomn= ()=>{
                     </g>
                 </svg>
                 <!-- <svg v-else-if="tipo === 'Telefono'" class="w-24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M347.1 24.6c7.7-18.6 28-28.5 47.4-23.2l88 24C499.9 30.2 512 46 512 64c0 247.4-200.6 448-448 448c-18 0-33.8-12.1-38.6-29.5l-24-88c-5.3-19.4 4.6-39.7 23.2-47.4l96-40c16.3-6.8 35.2-2.1 46.3 11.6L207.3 368c70.4-33.3 127.4-90.3 160.7-160.7L318.7 167c-13.7-11.2-18.4-30-11.6-46.3l40-96z"/></svg> -->
-                <svg v-else-if="tipo === 'Telefono'" class="w-24" version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+                <svg v-else-if="tipo === 'Telefono'" class="w-24 dark:bg-white rounded-lg p-2" version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
                     <g transform="translate(0,256) scale(0.1,-0.1)" stroke="none">
                         <path d="M415 2278 c-46 -17 -110 -64 -143 -105 -69 -89 -106 -200 -139 -418 -26 -174 -26 -776 0 -950 36 -241 78 -354 164 -442 57 -58 110 -85 179 -91 5 -4 51 -4 58 28 11 59 6 220 -9 289 -9 38 -33 101 -53 141 -33 63 -42 74 -77 86 -86 29 -128 125 -147 337 -9 96 -9 158 0 255 19 211 61 307 147 337 33 11 45 23 72 72 61 111 89 297 67 436 -6 36 -8 37 -48 36 -22 0 -54 -5 -71 -11z"/>
                         <path d="M573 2227 c21 -117 -14 -323 -74 -425 -10 -18 -19 -35 -19 -38 0 -2 20 -4 45 -4 55 0 81 23 121 109 50 105 42 323 -13 374 -10 8 -30 20 -44 25 l-26 10 10 -51z"/>
@@ -54,15 +54,15 @@ const clickbuttomn= ()=>{
             </div>
             <div class="w-full md:w-3/5 space-y-4 flex flex-col justify-center items-center">
                 <div class="flex flex-col justify-center">
-                    <h1 class="text-center md:text-left text-2xl font-bold text-gray-900">{{titulo}}</h1>
+                    <h1 class="text-center md:text-left text-2xl font-bold text-gray-900 dark:text-white uppercase">{{titulo}}</h1>
                     <!-- <p class="inline text-gray-700 font-normal leading-6 w-full text-base">UX Researcher, Co-host of the Interesting Design podcast
                         and a proud mother of three children</p> -->
                 </div>
                 <ul v-for="dat,_key in datosKeysHeaders" :key="_key" class="space-x-4 flex flex-row w-full mb-4">
-                    <li class="text-sm text-gray-800"><strong class="text-gray-900">{{dat}} :</strong> {{datos[_key]}} </li>
+                    <li class="text-sm text-gray-800 dark:text-white"><strong class="text-gray-900 dark:text-white uppercase">{{dat}} :</strong> {{datos[_key]}} </li>
                 </ul>
                 
-                <button @click="clickbuttomn" class="transition-colors bg-purple-700 hover:bg-purple-800 p-2 rounded-sm w-full text-white text-hover shadow-md shadow-purple-900">
+                <button @click="clickbuttomn" class="transition-colors bg-purple-700 hover:bg-purple-800 p-2 rounded-md w-full text-white text-hover shadow-md shadow-purple-900">
                     <slot/> 
                 </button>
             </div>

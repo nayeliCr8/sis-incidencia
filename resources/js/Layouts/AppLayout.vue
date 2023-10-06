@@ -52,9 +52,9 @@ const logout = () => {
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
-                                <NavLink v-if="hasRole('administrador')" :href="route('admin.users.index')" :active="route().current('admin.users.index')">
+                                <!-- <NavLink v-if="hasRole('administrador')" :href="route('admin.users.index')" :active="route().current('admin.users.index')">
                                     Admin
-                                </NavLink>
+                                </NavLink> -->
                                 <NavLink :href="route('parauser.index')" :active="route().current('parauser.index')">
                                     Mis Equipos
                                 </NavLink>

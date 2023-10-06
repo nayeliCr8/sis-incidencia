@@ -35,7 +35,7 @@ const deleteUser = (id) => {
   <Head title="Users index" />
 
   <AdminLayout>
-    <div class="max-w-7xl mx-auto py-4" v-if="hasPermission('user index')">
+    <div class="w-full p-4">
       <div class="flex justify-end mr-6">
         <Link
           :href="route('admin.users.create')"
