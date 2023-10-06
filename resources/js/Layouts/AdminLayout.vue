@@ -33,7 +33,7 @@ const logout = () => {
 <template>
     <div class="w-full h-full">
         <aside :class="{'w-100':showingNavigationDropdown,'ml-[-100%]':!showingNavigationDropdown}" 
-        class="fixed z-10 pb-3 pl-6 flex flex-col justify-between h-screen border-r bg-white dark:bg-gray-900 transition duration-300 lg:ml-0 md:w-4/12 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]">
+        class="fixed z-10 pb-3 pl-6 flex flex-col justify-between h-screen border-r dark:border-gray-600 bg-white dark:bg-gray-900 transition duration-300 lg:ml-0 md:w-4/12 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]">
             <div class="mt-4 text-center my-2">
                 <img :src="$page.props.auth.user.profile_photo_url" :alt="$page.props.auth.user.name" class="w-10 h-10 m-auto rounded-full object-cover lg:w-28 lg:h-28">
                 <h5 class="hidden mt-4 text-xl font-semibold text-gray-600 lg:block">{{ $page.props.auth.user.name }}</h5>
@@ -46,14 +46,14 @@ const logout = () => {
                         <path d="M13 8a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2V8Z" class="fill-current text-cyan-200 group-hover:text-cyan-300"></path>
                         <path d="M13 15a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-1Z" class="fill-current group-hover:text-sky-300"></path>
                     </svg>
-                    <span class="-mr-1 font-medium">Dashboard</span>
+                    <span class="-mr-1 font-medium dark:group-hover:text-gray-100">Dashboard</span>
                 </SederbarLink>
                 <!-- <SederbarLink :href="route('admin.etiqueta.index')" :active="route().current('admin.etiqueta.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path class="fill-current text-gray-300 group-hover:text-cyan-300" fill-rule="evenodd" d="M2 6a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1H8a3 3 0 00-3 3v1.5a1.5 1.5 0 01-3 0V6z" clip-rule="evenodd" />
                         <path class="fill-current text-gray-600 group-hover:text-cyan-800" d="M6 12a2 2 0 012-2h8a2 2 0 012 2v2a2 2 0 01-2 2H2h2a2 2 0 002-2v-2z" />
                     </svg>
-                    <span class="group-hover:text-gray-700">Etiquetas</span>
+                    <span class="group-hover:text-gray-700 dark:group-hover:text-gray-100">Etiquetas</span>
                 </SederbarLink> -->
                 <SederbarLink v-if="hasPermission('incidencia index')" :href="route('admin.incidencias.index')" :active="route().current('admin.incidencias.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
                     <!-- Nuevo ícono SVG para Incidencias -->
@@ -61,7 +61,7 @@ const logout = () => {
                     <path class="fill-current text-gray-400 group-hover:text-cyan-300" d="M384 96V320H64L64 96H384zM64 32C28.7 32 0 60.7 0 96V320c0 35.3 28.7 64 64 64H181.3l-10.7 32H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H352c17.7 0 32-14.3 32-32s-14.3-32-32-32H277.3l-10.7-32H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64z"/> 
                     <path class="fill-current text-gray-600 group-hover:text-cyan-800" d="M 534 0 c -26.5 0 -48 21.5 -48 48 V 432 c 0 26.5 21.5 48 48 48 h 64 c 26.5 0 48 -21.5 48 -48 V 48 C 646 21 624.5 0 598 0 H 598 z m 16 64 h 32 c 8.8 0 16 7.2 16 16 s -7.2 16 -16 16 H 550 c -8.8 0 -16 -7.2 -16 -16 s 7.2 -16 16 -16 z m -16 80 c 0 -8.8 7.2 -16 16 -16 h 32 c 8.8 0 16 7.2 16 16 s -7.2 16 -16 16 H 550 c -8.8 0 -16 -7.2 -16 -16 z m 32 160 a 32 32 0 1 1 0 64 a 32 32 0 1 1 0 -64 z"/>
                     </svg>
-                    <span class="group-hover:text-gray-700">Incidencias</span>
+                    <span class="group-hover:text-gray-700 dark:group-hover:text-gray-100">Incidencias</span>
                 </SederbarLink>
                 <SederbarLink v-if="hasPermission('user index')" :href="route('admin.users.index')" :active="route().current('admin.users.*')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
                     <svg
@@ -78,7 +78,7 @@ const logout = () => {
                                 d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
                             />
                         </svg>
-                    <span class="group-hover:text-gray-700">Usuarios</span>
+                    <span class="group-hover:text-gray-700 dark:group-hover:text-gray-100">Usuarios</span>
                 </SederbarLink>
                 <SederbarLink v-if="hasPermission('rol index')" :href="route('admin.roles.index')" :active="route().current('admin.roles.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
                     <svg
@@ -95,7 +95,7 @@ const logout = () => {
                             d="M4.5 12a7.5 7.5 0 0015 0m-15 0a7.5 7.5 0 1115 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077l1.41-.513m14.095-5.13l1.41-.513M5.106 17.785l1.15-.964m11.49-9.642l1.149-.964M7.501 19.795l.75-1.3m7.5-12.99l.75-1.3m-6.063 16.658l.26-1.477m2.605-14.772l.26-1.477m0 17.726l-.26-1.477M10.698 4.614l-.26-1.477M16.5 19.794l-.75-1.299M7.5 4.205L12 12m6.894 5.785l-1.149-.964M6.256 7.178l-1.15-.964m15.352 8.864l-1.41-.513M4.954 9.435l-1.41-.514M12.002 12l-3.75 6.495"
                         />
                     </svg>
-                    <span class="group-hover:text-gray-700">Roles</span>
+                    <span class="group-hover:text-gray-700 dark:group-hover:text-gray-100">Roles</span>
                 </SederbarLink>
                 <SederbarLink v-if="hasPermission('permiso index')" :href="route('admin.permissions.index')" :active="route().current('admin.permissions.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
                     <svg
@@ -112,37 +112,37 @@ const logout = () => {
                                 d="M7.864 4.243A7.5 7.5 0 0119.5 10.5c0 2.92-.556 5.709-1.568 8.268M5.742 6.364A7.465 7.465 0 004.5 10.5a7.464 7.464 0 01-1.15 3.993m1.989 3.559A11.209 11.209 0 008.25 10.5a3.75 3.75 0 117.5 0c0 .527-.021 1.049-.064 1.565M12 10.5a14.94 14.94 0 01-3.6 9.75m6.633-4.596a18.666 18.666 0 01-2.485 5.33"
                             />
                         </svg>
-                    <span class="group-hover:text-gray-700">Permisos</span>
+                    <span class="group-hover:text-gray-700 dark:group-hover:text-gray-100">Permisos</span>
                 </SederbarLink>
                 <SederbarLink v-if="hasPermission('sede index')" :href="route('admin.sedes.index')" :active="route().current('admin.sedes.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path class="fill-current text-gray-300 group-hover:text-cyan-300" fill-rule="evenodd" d="M2 6a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1H8a3 3 0 00-3 3v1.5a1.5 1.5 0 01-3 0V6z" clip-rule="evenodd" />
                         <path class="fill-current text-gray-600 group-hover:text-cyan-800" d="M6 12a2 2 0 012-2h8a2 2 0 012 2v2a2 2 0 01-2 2H2h2a2 2 0 002-2v-2z" />
                     </svg>
-                    <span class="group-hover:text-gray-700">Sedes</span>
+                    <span class="group-hover:text-gray-700 dark:group-hover:text-gray-100">Sedes</span>
                 </SederbarLink>
                 <SederbarLink v-if="hasPermission('oficina index')" :href="route('admin.oficinas.index')" :active="route().current('admin.oficinas.index')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path class="fill-current text-gray-300 group-hover:text-cyan-300" fill-rule="evenodd" d="M2 6a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1H8a3 3 0 00-3 3v1.5a1.5 1.5 0 01-3 0V6z" clip-rule="evenodd" />
                         <path class="fill-current text-gray-600 group-hover:text-cyan-800" d="M6 12a2 2 0 012-2h8a2 2 0 012 2v2a2 2 0 01-2 2H2h2a2 2 0 002-2v-2z" />
                     </svg>
-                    <span class="group-hover:text-gray-700">Oficinas</span>
+                    <span class="group-hover:text-gray-700 dark:group-hover:text-gray-100">Oficinas</span>
                 </SederbarLink>
                 <SederbarLink v-if="hasPermission('equipo index')" :href="route('admin.equipos.index')" :active="route().current('admin.equipos.*')" class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path class="fill-current text-gray-300 group-hover:text-cyan-300" fill-rule="evenodd" d="M2 6a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1H8a3 3 0 00-3 3v1.5a1.5 1.5 0 01-3 0V6z" clip-rule="evenodd" />
                         <path class="fill-current text-gray-600 group-hover:text-cyan-800" d="M6 12a2 2 0 012-2h8a2 2 0 012 2v2a2 2 0 01-2 2H2h2a2 2 0 002-2v-2z" />
                     </svg>
-                    <span class="group-hover:text-gray-700">Equipos</span>
+                    <span class="group-hover:text-gray-700 dark:group-hover:text-gray-100">Equipos</span>
                 </SederbarLink>
          </div>
-         <div class="px-6 -mx-6 pt-4 flex justify-between items-center border-t">
+         <div class="px-4 -mx-0.5 lg:-mx-6 pt-4 flex justify-between items-center border-t  dark:border-gray-800">
              <form @submit.prevent="logout">
              <button class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group">
                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                  </svg>
-                    <span class="group-hover:text-gray-700">Cerrar sesión</span>
+                    <span class="group-hover:text-gray-700 dark:group-hover:text-gray-100">Cerrar sesión</span>
                 </button>
             </form>
          </div>
@@ -150,9 +150,9 @@ const logout = () => {
 
      <div class="ml-auto h-full lg:w-[75%] xl:w-[80%] 2xl:w-[85%]">
         
-      <div class="sticky z-10 top-0 h-16 border-b bg-white dark:bg-gray-900 lg:py-2.5">
+      <div class="sticky z-10 top-0 h-16 border-b dark:border-gray-600 bg-white dark:bg-gray-900 lg:py-2.5">
           <div class="px-6 flex items-center justify-between space-x-4 2xl:container">
-              <h5 hidden class="text-2xl text-gray-600 font-semibold uppercase tracking-widest lg:block">Sistema de Incidencia</h5>
+              <h5 hidden class="text-2xl text-gray-600 font-semibold uppercase tracking-widest lg:block dark:text-white">Sistema de Incidencia</h5>
               <button class="w-12 h-16 -mr-2 border-r lg:hidden" @click="showingNavigationDropdown=!showingNavigationDropdown">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 my-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -196,15 +196,15 @@ const logout = () => {
                       </svg>
                   </button>
               </div>
-          </div>
+            </div>
         </div>
-        <div class="px-6 py-7 h-full 2xl:container dark:bg-gray-900">
+        <div class="px-6 py-20 h-full 2xl:container dark:bg-gray-900">
             <slot>
                 
             </slot>
         </div>
-  
-        </div>
+        
+    </div>
     </div>
 </template>
 
