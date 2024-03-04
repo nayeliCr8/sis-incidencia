@@ -63,7 +63,7 @@ const clickbuttomn= ()=>{
                 </ul>
                 
                 <button @click="clickbuttomn" class="transition-colors bg-purple-700 hover:bg-purple-800 p-2 rounded-md w-full text-white text-hover shadow-md shadow-purple-900">
-                    <slot/> 
+                    <slot/> ccc 
                 </button>
             </div>
         </div>

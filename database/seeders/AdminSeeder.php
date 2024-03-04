@@ -15,8 +15,8 @@ class AdminSeeder extends Seeder
     {
         User::factory()->create([
             'name' => 'Super Administrator',
-            'email' => 'superadministrador@gmail.com',
-            'password' => bcrypt('superadministrador')
+            'email' => 'admin@gmail.com',
+            'password' => bcrypt('password')
         ])->assignRole('superadmin');
     }
 }

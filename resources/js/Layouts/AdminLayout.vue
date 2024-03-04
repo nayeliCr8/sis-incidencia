@@ -33,13 +33,64 @@ const logout = () => {
 <template>
     <div class="w-full h-full">
         <aside :class="{'w-100':showingNavigationDropdown,'ml-[-100%]':!showingNavigationDropdown}" 
-        class="fixed z-10 pb-3 pl-6 flex flex-col justify-between h-screen border-r dark:border-gray-600 bg-white dark:bg-gray-900 transition duration-300 lg:ml-0 md:w-4/12 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]">
-            <div class="mt-4 text-center my-2">
+        class="fixed z-10 pb-3 pl-6 flex flex-col justify-between h-screen border-r dark:border-gray-600 bg-[#000] dark:bg-gray-900 transition duration-300 lg:ml-0 md:w-4/12 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]">
+           
+        
+        
+        <!-- <div class="mt-4 text-center my-2">
                 <img :src="$page.props.auth.user.profile_photo_url" :alt="$page.props.auth.user.name" class="w-10 h-10 m-auto rounded-full object-cover lg:w-28 lg:h-28">
                 <h5 class="hidden mt-4 text-xl font-semibold text-gray-600 lg:block">{{ $page.props.auth.user.name }}</h5>
                 <span class="hidden text-gray-400 lg:block">Admin</span>
+            </div> -->
+
+
+            <div class="pt-2 px-3">
+            <div class="flex p-2 mb-4">
+                <div class="">
+                    <ApplicationLogo />
+                </div>
+                <div class="flex justify-end w-full text-white items-center gap-1 text-xs">
+                    <i class="fa-solid fa-circle text-lime-400"></i>
+                    En linea
+                </div>
             </div>
-            <div class="overflow-auto p-2 h-full space-y-2">
+
+            <!-- Logo -->
+            <div class="mb-2 ml-1 shrink-0 flex items-center justify-center h-16 ">
+
+                <div class=" mt-24 flex">
+                    <div class=" ">
+                        <Link class="flex items-end justify-center" :href="route('dashboard')">
+
+                        <button v-if="$page.props.jetstream.managesProfilePhotos"
+                            class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
+                            <img v-if="$page.props.auth.user.profile_photo_path == null"
+                                class="h-24 w-24 rounded-full object-cover" :src="$page.props.auth.user.profile_photo_url"
+                                :alt="$page.props.auth.user.name">
+                            <img v-else class="h-20 w-20 rounded-full object-cover"
+                                :src="'../storage/' + $page.props.auth.user.profile_photo_path"
+                                :alt="$page.props.auth.user.name">
+                        </button>
+                        </Link>
+                        <div class=" mt-4 flex-col flex items-center justify-center">
+                            <span class="text-md text-white font-cursive">
+                                {{ $page.props.auth.user.name }}
+                            </span>
+                            <p class="text-sm text-[#94A3B8] ">{{ $page.props.auth.user.email }}</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div v-if="closeable" class="dark:text-gray-400 dark:hover:text-gray-300">
+                            <button @click="emits('closeSideBard')"
+                                class="px-3 py-2 rounded-full hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <i class="fa-solid fa-xmark bg-yellow-500"></i>
+                                <p>{{  }} dsd</p>
+                            </button>
+                        </div> -->
+            </div>
+        </div>
+
+            <div class="overflow-auto p-2 h-full space-y-2 mt-20">
                 <SederbarLink :href="route('admin.prueba')" :active="route().current('admin.prueba')" aria-label="dashboard" class="relative px-4 py-3 flex items-center space-x-4 rounded-xl">
                     <svg class="-ml-1 h-6 w-6" viewBox="0 0 24 24" fill="none">
                         <path d="M6 8a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V8ZM6 15a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-1Z" class="fill-current text-cyan-400 dark:fill-slate-600"></path>
@@ -172,18 +223,18 @@ const logout = () => {
                   <div hidden class="md:block">
                       <div class="relative flex items-center text-gray-400 focus-within:text-cyan-400">
                           <span class="absolute left-4 h-6 flex items-center pr-3 border-r border-gray-300">
-                          <svg xmlns="http://ww50w3.org/2000/svg" class="w-4 fill-current" viewBox="0 0 35.997 36.004">
+                          <!-- <svg xmlns="http://ww50w3.org/2000/svg" class="w-4 fill-current" viewBox="0 0 35.997 36.004">
                               <path id="Icon_awesome-search" data-name="search" d="M35.508,31.127l-7.01-7.01a1.686,1.686,0,0,0-1.2-.492H26.156a14.618,14.618,0,1,0-2.531,2.531V27.3a1.686,1.686,0,0,0,.492,1.2l7.01,7.01a1.681,1.681,0,0,0,2.384,0l1.99-1.99a1.7,1.7,0,0,0,.007-2.391Zm-20.883-7.5a9,9,0,1,1,9-9A8.995,8.995,0,0,1,14.625,23.625Z"></path>
-                          </svg>
+                          </svg> -->
                           </span>
                           <input type="search" name="leadingIcon" id="leadingIcon" placeholder="Search here" class="w-full pl-14 pr-4 py-2.5 rounded-xl text-sm text-gray-600 outline-none border border-gray-300 focus:border-cyan-300 transition">
                       </div>
                   </div>
                   <!--/search bar -->
                   <button aria-label="search" class="w-10 h-10 rounded-xl border bg-gray-100 focus:bg-gray-100 active:bg-gray-200 md:hidden">
-                      <svg xmlns="http://ww50w3.org/2000/svg" class="w-4 mx-auto fill-current text-gray-600" viewBox="0 0 35.997 36.004">
+                      <!-- <svg xmlns="http://ww50w3.org/2000/svg" class="w-4 mx-auto fill-current text-gray-600" viewBox="0 0 35.997 36.004">
                           <path id="Icon_awesome-search" data-name="search" d="M35.508,31.127l-7.01-7.01a1.686,1.686,0,0,0-1.2-.492H26.156a14.618,14.618,0,1,0-2.531,2.531V27.3a1.686,1.686,0,0,0,.492,1.2l7.01,7.01a1.681,1.681,0,0,0,2.384,0l1.99-1.99a1.7,1.7,0,0,0,.007-2.391Zm-20.883-7.5a9,9,0,1,1,9-9A8.995,8.995,0,0,1,14.625,23.625Z"></path>
-                      </svg>
+                      </svg> -->
                   </button>
                   <button aria-label="chat" class="w-10 h-10 rounded-xl border bg-gray-100 focus:bg-gray-100 active:bg-gray-200">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 m-auto text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
