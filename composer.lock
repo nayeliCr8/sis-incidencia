@@ -3796,7 +3796,6 @@
         {
             "name": "symfony/console",
             "version": "v6.3.2",
->>>>>>> d8ed9442ec47a8a7e3431d4110391e8e560f70d1
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-permission.git",
